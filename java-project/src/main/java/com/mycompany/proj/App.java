@@ -41,6 +41,7 @@ public class App {
       
       System.out.print("시작일?:");
       startDate = keyboard.nextLine();
+      
           
       System.out.print("종료일?:");
       endDate = keyboard.nextLine();
@@ -52,6 +53,11 @@ public class App {
       dayTime = keyboard.nextInt();
       
       System.out.println("");
+      
+      // 사용 후 스캐너 객체의 자원을 해제한다.
+      keyboard.close(); //운영체제 자원(System.***)
+      
+      //서버 프로그램에서는 자원을 사용하고 난 후, (운영체제(입출력 스트림), 네트워크, DB 등) 닫아줘야 한다. 
 
       
       System.out.printf("번호 : %d\n",num);

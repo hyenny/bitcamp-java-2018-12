@@ -2,6 +2,10 @@
  
 package com.mycompany.proj;
 
+//java.sql.Date와 java.util.Date의 차이?
+import java.sql.Date;
+
+
 //번호? 1
 //이름? 홍길동
 //이메일? hong@test.com
@@ -22,7 +26,7 @@ public class App2 {
     public static void main(String[] args) {
       int num;
       String name, email, password, picture, tel;
-      String joinDate = "2019-01-01";
+      //String joinDate = "2019-01-01";
       
       java.util.Scanner keyboard = new java.util.Scanner(System.in);
       
@@ -45,6 +49,8 @@ public class App2 {
       
       System.out.print("전화?:");
       tel = keyboard.nextLine();
+      
+      Date joinDate = new Date(System.currentTimeMillis());
       
       System.out.println("");
       
