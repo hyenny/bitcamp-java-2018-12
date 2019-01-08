@@ -1,40 +1,51 @@
 
- 
 package com.mycompany.proj;
 
-//번호? 1
-//내용? 게시글입니다.
-//
-//번호: 1
-//내용: 게시글입니다.
-//작성일: 2019-01-01
-//조회수: 0
+import java.sql.Date;
 
 public class App3 {
     
     public static void main(String[] args) {
-      int num;
-      String contents;
-      String writeDate = "2019-01-01";
-      int hits = 0;
+      
+      int idx = 0;
+      int i = 0;
+      int[] num = new int[100];
+      String[] contents = new String[100];
+      int[] hits = new int[100];
+      Date writeDate = new Date(System.currentTimeMillis());
+      
       
       java.util.Scanner keyboard = new java.util.Scanner(System.in);
       
-      System.out.print("번호?:");
-      num = keyboard.nextInt();
+      while(true) {
+        System.out.print("번호?:");
+        num[idx] = Integer.parseInt(keyboard.nextLine());
+        
+        System.out.print("내용?:");
+        contents[idx] = keyboard.nextLine();
+        
+        System.out.print("계속 하시겠습니까?(Y/n):");
+        String str = keyboard.nextLine();
+        
+        if (!str.equalsIgnoreCase("y") && !str.equalsIgnoreCase("Y") && !str.equalsIgnoreCase(""))
+          break;
+        
+        idx++;
+        
+      }
       
-      keyboard.nextLine();
+      System.out.println("-------------------------------------------");
       
-      System.out.print("내용?:");
-      contents = keyboard.nextLine();
+      //번호,내용,작성일,조회수
+//      1, 게시글입니다.              , 2019-01-01, 0
+//      2, 두 번째 게시글입니다.        , 2019-01-01, 0
+//      3, 세 번째 게시글입니다.        , 2019-01-01, 0
       
-     
-      System.out.println("");
+    while(i <= idx) {
+      System.out.printf("%d, %s, %s, %d\n", num[i],contents[i], writeDate, hits[i]);
+      i++;
+    }
       
-      System.out.printf("번호 : %d\n",num);
-      System.out.printf("내용 : %s\n",contents);
-      System.out.printf("작성일 : %s\n",writeDate);
-      System.out.printf("조회수 : %s\n", hits);
-      
+
     }
 }

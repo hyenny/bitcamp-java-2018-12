@@ -13,12 +13,16 @@ public class Test07 {
     System.out.println(f1 * f1); //0.010000001 값 나옴. 0.000000001의 오차 발생
     
     
-    
+    //해결방법
     float r = f1 * f2 - 0.01f;
-    System.out.println(((f1 * f1) - 0.01f)<= Float.POSITIVE_INFINITY);
+    System.out.println(r <= Float.POSITIVE_INFINITY);
+    
+    //((0.01f * 0.01f) - 0.01f) <=0.000000001
     
     
   }
+  
+ 
   
   
     

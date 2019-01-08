@@ -1,73 +1,71 @@
 
 package com.mycompany.proj;
 
-//작업1) 한 개의 수업 내용을 입력 받아 출력하라.
-//App.java 실행 결과
-//
-//번호? 1
-//수업명? 자바 프로젝트 실습
-//수업내용? 자바 프로젝트를 통한 자바 언어 활용법 익히기
-//시작일? 2019-01-02
-//종료일? 2019-05-28
-//총수업시간? 1000
-//일수업시간? 8
-//
-//번호: 1
-//수업명: 자바 프로젝트 실습
-//수업내용: 자바 프로젝트를 통한 자바 언어 활용법 익히기
-//기간: 2019-01-02 ~ 2019-05-28
-//총수업시간: 1000 시간
-//일수업시간: 8 시간
+import java.sql.Date;
 
 public class App {
   
     public static void main(String[] args) {
-      int num;
-      String className, contents, startDate, endDate;
-      int totalTime, dayTime;
+      int idx = 0;
+      int i = 0;
+      int[] num = new int[100];
+      String[] className = new String[100];
+      String[] contents = new String[100];
+      Date[] startDate = new Date[100];
+      Date[] endDate = new Date[100];
+      int[] totalTime = new int[100]; 
+      int[] dayTime = new int[100];
+      
       
       java.util.Scanner keyboard = new java.util.Scanner(System.in);
       
-      System.out.print("번호?:");
-      num = keyboard.nextInt();
-      
-      keyboard.nextLine();
-      
-      System.out.print("수업명?:");
-      className = keyboard.nextLine();
-      
-      System.out.print("수업내용?:");
-      contents = keyboard.nextLine();
-      
-      System.out.print("시작일?:");
-      startDate = keyboard.nextLine();
-      
-          
-      System.out.print("종료일?:");
-      endDate = keyboard.nextLine();
-      
-      System.out.print("총수업시간?:");
-      totalTime = keyboard.nextInt();
-      
-      System.out.print("일수업시간?:");
-      dayTime = keyboard.nextInt();
-      
-      System.out.println("");
-      
-      // 사용 후 스캐너 객체의 자원을 해제한다.
-      keyboard.close(); //운영체제 자원(System.***)
-      
-      //서버 프로그램에서는 자원을 사용하고 난 후, (운영체제(입출력 스트림), 네트워크, DB 등) 닫아줘야 한다. 
-
-      
-      System.out.printf("번호 : %d\n",num);
-      System.out.printf("수업명 : %s\n",className);
-      System.out.printf("수업내용 : %s\n",contents);
-      System.out.printf("기간 : %s ~ %s\n", startDate, endDate);
-      System.out.printf("총수업시간 : %d 시간\n",totalTime);
-      System.out.printf("총수업시간 : %d 시간\n",dayTime);
-      
-      
-    }
+      while(true) {
         
+        System.out.print("번호?:");
+        num[idx] = keyboard.nextInt();
+        
+        keyboard.nextLine();
+        
+        System.out.print("수업명?:");
+        className[idx] = keyboard.nextLine();
+        
+        System.out.print("수업내용?:");
+        contents[idx] = keyboard.nextLine();
+        
+        System.out.print("시작일?:");
+        startDate[idx] = Date.valueOf(keyboard.nextLine());
+        
+        System.out.print("종료일?:");
+        endDate[idx] = Date.valueOf(keyboard.nextLine());
+        
+        System.out.print("총수업시간?:");
+        totalTime[idx] = Integer.parseInt(keyboard.nextLine());
+        
+        System.out.print("일수업시간?:");
+        dayTime[idx] = Integer.parseInt(keyboard.nextLine());
+        
+        System.out.print("계속 하시겠습니까?(Y/n):");
+        String str = keyboard.nextLine();
+        
+        if (!str.equalsIgnoreCase("y") && !str.equalsIgnoreCase("Y") && !str.equalsIgnoreCase(""))
+          break;
+        
+        idx++; 
+        
+      }
+      
+      System.out.println("-------------------------------------------");
+      
+//      1, 자바 프로젝트 실습     , 2019-01-02 ~ 2019-05-28, 1000
+//      2, 자바 프로그래밍 기초    , 2019-02-01 ~ 2019-02-28,  160
+//      3, 자바 프로그래밍 고급    , 2019-03-02 ~ 2019-03-30,  160
+      
+      while(i <= idx) {
+        System.out.printf("%d, %s, %s ~ %s, %d\n", num[i],className[i], startDate[i], endDate[i], totalTime[i]);
+        i++;
+      }
+    
+
+    }
+     
 }

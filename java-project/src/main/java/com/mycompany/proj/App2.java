@@ -2,64 +2,71 @@
  
 package com.mycompany.proj;
 
-//java.sql.Date와 java.util.Date의 차이?
 import java.sql.Date;
-
-
-//번호? 1
-//이름? 홍길동
-//이메일? hong@test.com
-//암호? 1111
-//사진? hong.png
-//전화? 1111-2222
-//
-//번호: 1
-//이름: 홍길동
-//이메일: hong@test.com
-//암호: 1111
-//사진: hong.png
-//전화: 1111-2222
-//가입일: 2019-01-01
 
 public class App2 {
     
     public static void main(String[] args) {
-      int num;
-      String name, email, password, picture, tel;
-      //String joinDate = "2019-01-01";
-      
-      java.util.Scanner keyboard = new java.util.Scanner(System.in);
-      
-      System.out.print("번호?:");
-      num = keyboard.nextInt();
-      
-      keyboard.nextLine();
-      
-      System.out.print("이름?:");
-      name = keyboard.nextLine();
-      
-      System.out.print("이메일?:");
-      email = keyboard.nextLine();
-      
-      System.out.print("암호?:");
-      password = keyboard.nextLine();
-          
-      System.out.print("사진?:");
-      picture = keyboard.nextLine();
-      
-      System.out.print("전화?:");
-      tel = keyboard.nextLine();
+      int idx = 0;
+      int i = 0;
+      int[] num = new int[100];
+      String[] name = new String[100];
+      String[] email = new String[100];
+      String[] password = new String[100];
+      String[] picture = new String[100];
+      String[] tel = new String[100];
       
       Date joinDate = new Date(System.currentTimeMillis());
       
-      System.out.println("");
       
-      System.out.printf("번호 : %d\n",num);
-      System.out.printf("이름 : %s\n",name);
-      System.out.printf("이메일 : %s\n",email);
-      System.out.printf("암호 : %s\n", password);
-      System.out.printf("사진 : %s\n",picture);
-      System.out.printf("전화 : %s\n", tel);
-      System.out.printf("가입일 : %s\n",joinDate);
+      java.util.Scanner keyboard = new java.util.Scanner(System.in);
+      
+      while (true) {
+        
+        System.out.print("번호?:");
+        num[idx] = keyboard.nextInt();
+        
+        keyboard.nextLine();
+        
+        System.out.print("이름?:");
+        name[idx] = keyboard.nextLine();
+        
+        System.out.print("이메일?:");
+        email[idx] = keyboard.nextLine();
+        
+        System.out.print("암호?:");
+        password[idx] = keyboard.nextLine();
+            
+        System.out.print("사진?:");
+        picture[idx] = keyboard.nextLine();
+        
+        System.out.print("전화?:");
+        tel[idx] = keyboard.nextLine();
+        
+        System.out.print("계속 하시겠습니까?(Y/n):");
+        String str = keyboard.nextLine();
+        
+        if (!str.equalsIgnoreCase("y") && !str.equalsIgnoreCase("Y") && !str.equalsIgnoreCase(""))
+          break;
+        
+        idx++;
+        
+      }
+      
+      System.out.println("-------------------------------------------");
+      
+      while(i <= idx) {
+        System.out.printf("%d, %s, %s, %s, %s\n", num[i], name[i], email[i], tel[i], joinDate);
+        i++;
+      }
+      
+      
+      //번호,이름,이메일,전화,가입일
+      
+//      1, 홍길동 , hong@test.com       , 1111-2222      , 2019-01-01
+//      2, 임꺽정 , lim@test.com        , 1111-2223      , 2019-01-01
+//      3, 전봉준 , jeon@test.com       , 1111-2224      , 2019-01-01
+      
+
     }
 }
