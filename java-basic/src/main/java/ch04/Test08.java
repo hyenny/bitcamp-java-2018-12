@@ -6,6 +6,7 @@ public class Test08 {
   public static void main(String[] args) {
     int a = 5;
     int r = a++;
+
     
     System.out.printf("%d, %d\n", a,r);
     // 후위 연산장
@@ -18,9 +19,9 @@ public class Test08 {
     // 3). = 연산 실행 => r 변수에 5를 저장
     
     a = 5;
-    r = a++ + a++ * a++;
+    //r = a++ + a++ * a++;
     
-    System.out.printf("%d, %d\n", a,r);
+    //System.out.printf("%d, %d\n", a,r);
     // r = 5 + a++ * a++  a=6
     // r = 5 + 6 * a++ a=7
     // r = 5 + 6 * 7 a=8

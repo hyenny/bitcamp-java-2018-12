@@ -44,15 +44,23 @@ public class App {
         System.out.print("일수업시간?:");
         dayTime[idx] = Integer.parseInt(keyboard.nextLine());
         
+        System.out.println();
+        
         System.out.print("계속 하시겠습니까?(Y/n):");
         String str = keyboard.nextLine();
-        
-        if (!str.equalsIgnoreCase("y") && !str.equalsIgnoreCase("Y") && !str.equalsIgnoreCase(""))
-          break;
+        System.out.println();
         
         idx++; 
         
+        // equals() : 대소문자 구분한다.
+        // equalsIgnoreCase() : 대소문자 관계 없이(ignore case) equals 검사를 한다.
+        if (!str.equalsIgnoreCase("y") && !str.equalsIgnoreCase(""))
+          break;
+
+        
       }
+      
+      keyboard.close(); // 스캐너 자원 해제
       
       System.out.println("-------------------------------------------");
       
@@ -60,10 +68,12 @@ public class App {
 //      2, 자바 프로그래밍 기초    , 2019-02-01 ~ 2019-02-28,  160
 //      3, 자바 프로그래밍 고급    , 2019-03-02 ~ 2019-03-30,  160
       
-      while(i <= idx) {
-        System.out.printf("%d, %s, %s ~ %s, %d\n", num[i],className[i], startDate[i], endDate[i], totalTime[i]);
+      while(i < idx) {
+        System.out.printf("%d, %-20s, %s ~ %s, %d\n", num[i],className[i], startDate[i], endDate[i], totalTime[i]);
         i++;
       }
+      
+      // %-20s : 20자의 문자열을 왼쪽 정렬(-)한다.
     
 
     }
