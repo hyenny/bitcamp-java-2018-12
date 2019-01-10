@@ -9,36 +9,39 @@ public class App2 {
     public static void main(String[] args) {
       int idx = 0;
       int i = 0;
+      int[] num = new int[100];
+      String[] name = new String[100];
+      String[] email = new String[100];
+      String[] password = new String[100];
+      String[] picture = new String[100];
+      String[] tel = new String[100];
       
-      Member[] members = new Member[100]; 
+      Date joinDate = new Date(System.currentTimeMillis());
       
       
       java.util.Scanner keyboard = new java.util.Scanner(System.in);
       
       while (true) {
         
-        members[idx] = new Member(); 
-        members[idx].joinDate = new Date(System.currentTimeMillis());
-        
         System.out.print("번호?:");
-        members[idx].num = keyboard.nextInt();
+        num[idx] = keyboard.nextInt();
         
         keyboard.nextLine();
         
         System.out.print("이름?:");
-        members[idx].name = keyboard.nextLine();
+        name[idx] = keyboard.nextLine();
         
         System.out.print("이메일?:");
-        members[idx].email = keyboard.nextLine();
+        email[idx] = keyboard.nextLine();
         
         System.out.print("암호?:");
-        members[idx].password = keyboard.nextLine();
+        password[idx] = keyboard.nextLine();
             
         System.out.print("사진?:");
-        members[idx].picture = keyboard.nextLine();
+        picture[idx] = keyboard.nextLine();
         
         System.out.print("전화?:");
-        members[idx].tel = keyboard.nextLine();
+        tel[idx] = keyboard.nextLine();
         
         System.out.print("계속 하시겠습니까?(Y/n):");
         String str = keyboard.nextLine();
@@ -53,8 +56,7 @@ public class App2 {
       System.out.println("-------------------------------------------");
       
       while(i <= idx) {
-        System.out.printf("%d, %s, %s, %s, %s\n", 
-            members[i].num, members[i].name, members[i].email, members[i].tel, members[i].joinDate);
+        System.out.printf("%d, %s, %s, %s, %s\n", num[i], name[i], email[i], tel[i], joinDate);
         i++;
       }
       

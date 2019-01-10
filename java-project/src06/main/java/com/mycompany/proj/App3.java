@@ -9,23 +9,20 @@ public class App3 {
       
       int idx = 0;
       int i = 0;
-      
-      Board[] boards = new Board[100]; 
+      int[] num = new int[100];
+      String[] contents = new String[100];
+      int[] hits = new int[100];
+      Date writeDate = new Date(System.currentTimeMillis());
       
       
       java.util.Scanner keyboard = new java.util.Scanner(System.in);
       
       while(true) {
-        
-        boards[idx] = new Board(); 
-        boards[idx].writeDate = new Date(System.currentTimeMillis());
-        boards[idx].hits = 0;
-        
         System.out.print("번호?:");
-        boards[idx].num = Integer.parseInt(keyboard.nextLine());
+        num[idx] = Integer.parseInt(keyboard.nextLine());
         
         System.out.print("내용?:");
-        boards[idx].contents = keyboard.nextLine();
+        contents[idx] = keyboard.nextLine();
         
         System.out.print("계속 하시겠습니까?(Y/n):");
         String str = keyboard.nextLine();
@@ -45,7 +42,7 @@ public class App3 {
 //      3, 세 번째 게시글입니다.        , 2019-01-01, 0
       
     while(i <= idx) {
-      System.out.printf("%d, %s, %s, %d\n", boards[i].num, boards[i].contents, boards[i].writeDate, boards[i].hits);
+      System.out.printf("%d, %s, %s, %d\n", num[i],contents[i], writeDate, hits[i]);
       i++;
     }
       

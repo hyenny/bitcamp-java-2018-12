@@ -8,36 +8,41 @@ public class App {
     public static void main(String[] args) {
       int idx = 0;
       int i = 0;
-
-      Lesson[] lessons = new Lesson[100]; // lessons : Lesson 레퍼런스 배열 생성
+      int[] num = new int[100];
+      String[] className = new String[100];
+      String[] contents = new String[100];
+      Date[] startDate = new Date[100];
+      Date[] endDate = new Date[100];
+      int[] totalTime = new int[100]; 
+      int[] dayTime = new int[100];
+      
       
       java.util.Scanner keyboard = new java.util.Scanner(System.in);
       
-      
       while(true) {
         
-        lessons[idx] = new Lesson(); 
-        
         System.out.print("번호?:");
-        lessons[idx].num = Integer.parseInt(keyboard.nextLine());
+        num[idx] = keyboard.nextInt();
+        
+        keyboard.nextLine();
         
         System.out.print("수업명?:");
-        lessons[idx].className = keyboard.nextLine();
+        className[idx] = keyboard.nextLine();
         
         System.out.print("수업내용?:");
-        lessons[idx].contents = keyboard.nextLine();
+        contents[idx] = keyboard.nextLine();
         
         System.out.print("시작일?:");
-        lessons[idx].startDate = Date.valueOf(keyboard.nextLine());
+        startDate[idx] = Date.valueOf(keyboard.nextLine());
         
         System.out.print("종료일?:");
-        lessons[idx].endDate = Date.valueOf(keyboard.nextLine());
+        endDate[idx] = Date.valueOf(keyboard.nextLine());
         
         System.out.print("총수업시간?:");
-        lessons[idx].totalTime = Integer.parseInt(keyboard.nextLine());
+        totalTime[idx] = Integer.parseInt(keyboard.nextLine());
         
         System.out.print("일수업시간?:");
-        lessons[idx].dayTime = Integer.parseInt(keyboard.nextLine());
+        dayTime[idx] = Integer.parseInt(keyboard.nextLine());
         
         System.out.println();
         
@@ -64,8 +69,7 @@ public class App {
 //      3, 자바 프로그래밍 고급    , 2019-03-02 ~ 2019-03-30,  160
       
       while(i < idx) {
-        System.out.printf("%d, %-20s, %s ~ %s, %d\n", 
-            lessons[i].num,lessons[i].className, lessons[i].startDate, lessons[i].endDate, lessons[i].totalTime);
+        System.out.printf("%d, %-20s, %s ~ %s, %d\n", num[i],className[i], startDate[i], endDate[i], totalTime[i]);
         i++;
       }
       
