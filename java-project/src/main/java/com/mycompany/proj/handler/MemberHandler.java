@@ -1,9 +1,9 @@
-package handler;
+package com.mycompany.proj.handler;
 
 import java.sql.Date;
 import java.util.Scanner;
 import com.mycompany.proj.App;
-import domain.Member;
+import com.mycompany.proj.domain.Member;
 
 public class MemberHandler {
   

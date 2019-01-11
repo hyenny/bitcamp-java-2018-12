@@ -1,5 +1,5 @@
 
-package domain;
+package com.mycompany.proj.domain;
 
 import java.sql.Date;
 

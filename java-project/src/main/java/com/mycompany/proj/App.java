@@ -2,9 +2,9 @@
 package com.mycompany.proj;
 
 import java.util.Scanner;
-import handler.BoardHandler;
-import handler.LessonHandler;
-import handler.MemberHandler;
+import com.mycompany.proj.handler.BoardHandler;
+import com.mycompany.proj.handler.LessonHandler;
+import com.mycompany.proj.handler.MemberHandler;
 
 public class App {
   
