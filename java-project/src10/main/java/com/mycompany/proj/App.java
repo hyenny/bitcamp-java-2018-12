@@ -2,16 +2,16 @@
 package com.mycompany.proj;
 
 import java.util.Scanner;
-import handler.BoardHandler;
-import handler.LessonHandler;
-import handler.MemberHandler;
 
 public class App {
   
-  public final static int NUMBER = 10;
+  final static int NUMBER = 10;
 
-  public static Scanner keyboard = new Scanner(System.in);
- 
+  static Lesson[] lessons = new Lesson[NUMBER];
+  static Member[] members = new Member[NUMBER]; 
+  static Board[] boards = new Board[NUMBER]; 
+
+  static Scanner keyboard = new Scanner(System.in);
 
   public static void main(String[] args) {
 
