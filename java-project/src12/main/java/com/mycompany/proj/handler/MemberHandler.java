@@ -5,20 +5,12 @@ import java.util.Scanner;
 import com.mycompany.proj.domain.Member;
 
 public class MemberHandler {
+  static int m_idx = 0;
 
-  static final int LENTH = 10;
+  static Member[] members = new Member[100]; 
+  public static Scanner keyboard;
 
-  int m_idx;
-  Member[] members = new Member[LENTH]; 
-  
-  Scanner keyboard;
-  
-  public MemberHandler(Scanner keyboard) {
-    this.keyboard = keyboard;
-    
-  }
-
-  public void addMember() {
+  public static void addMember() {
     Member member = new Member();
     member.joinDate = new Date(System.currentTimeMillis());
 
@@ -49,7 +41,7 @@ public class MemberHandler {
 
   }
 
-  public void listMember() {
+  public static void listMember() {
     int i = 0;
     while(i < m_idx) {
       System.out.printf("%d, %s, %s, %s, %s\n", 

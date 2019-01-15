@@ -5,19 +5,13 @@ import java.util.Scanner;
 import com.mycompany.proj.domain.Lesson;
 
 public class LessonHandler {
-  static final int LENTH = 10;
-
-  int l_idx;
-  Lesson[] lessons = new Lesson[LENTH];
   
-  Scanner keyboard; 
-  
-  public LessonHandler(Scanner keyboard) {
-    this.keyboard = keyboard;
-    
-  }
+  public static Scanner keyboard; 
 
-  public void addLesson() {
+  static int l_idx = 0;
+  static Lesson[] lessons = new Lesson[100];
+
+  public static void addLesson() {
     // lesson 입력
     Lesson lesson = new Lesson(); 
 
@@ -47,7 +41,7 @@ public class LessonHandler {
     l_idx++; 
   }
 
-  public void listLesson() {
+  public static void listLesson() {
     int i = 0;
     while (i < l_idx) {
       System.out.printf("%d, %-20s, %s ~ %s, %d\n", 

@@ -6,19 +6,12 @@ import com.mycompany.proj.domain.Board;
 
 public class BoardHandler {
   
-  static final int LENTH = 10;
+  static int b_idx = 0;
+
+  static Board[] boards = new Board[100]; 
+  public static Scanner keyboard;
   
-  int b_idx;
-  Board[] boards = new Board[LENTH]; 
-  
-  Scanner keyboard;
-  
-  public BoardHandler(Scanner keyboard) {
-    this.keyboard = keyboard;
-    
-  }
-  
-  public void addBoard() {
+  public static void addBoard() {
     Board board = new Board();
     
     board.writeDate = new Date(System.currentTimeMillis());
@@ -35,11 +28,11 @@ public class BoardHandler {
     b_idx++;
   }
   
-  public void listBoard() {
-    for (int i = 0; i < b_idx; i++) {
-      System.out.printf("%3d, %-20s, %s, %d\n", 
-          boards[i].num, boards[i].contents, 
-          boards[i].writeDate, boards[i].hits);
+  public static void listBoard() {
+    int i = 0;
+    while(i < b_idx) {
+      System.out.printf("%d, %s, %s, %d\n", boards[i].num, boards[i].contents, boards[i].writeDate, boards[i].hits);
+      i++;
     }
   }
 
