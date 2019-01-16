@@ -6,40 +6,39 @@ import com.mycompany.proj.domain.Board;
 
 public class BoardHandler {
   
-  static final int LENTH = 10;
-  
-  int b_idx;
-  Board[] boards = new Board[LENTH]; 
-  
-  Scanner keyboard;
+  Scanner keybored;
   
   public BoardHandler(Scanner keyboard) {
-    this.keyboard = keyboard;
-    
+    this.keybored = keyboard;
   }
   
+  BoardList boardList = new BoardList();
+  
   public void addBoard() {
+    
     Board board = new Board();
     
-    board.writeDate = new Date(System.currentTimeMillis());
-    board.hits = 0;
+    board.setWriteDate(new Date(System.currentTimeMillis()));
+    board.setHits(0);
 
     System.out.print("번호?:");
-    board.num = Integer.parseInt(keyboard.nextLine());
+    board.setNum(Integer.parseInt(keybored.nextLine()));
 
     System.out.print("내용?:");
-    board.contents = keyboard.nextLine();
+    board.setContents(keybored.nextLine());
     
-    boards[b_idx] = board;
-
-    b_idx++;
+    boardList.add(board);
+    
+    System.out.println("저장하였습니다");
+   
   }
   
   public void listBoard() {
-    for (int i = 0; i < b_idx; i++) {
-      System.out.printf("%3d, %-20s, %s, %d\n", 
-          boards[i].num, boards[i].contents, 
-          boards[i].writeDate, boards[i].hits);
+    
+    for (int i = 0; i < boardList.toArray().length; i++) {
+      System.out.printf("%3d, %-20s, %s, %d\n",
+          boardList.toArray()[i].getNum(), boardList.toArray()[i].getContents(), 
+          boardList.toArray()[i].getWriteDate(), boardList.toArray()[i].getHits());
     }
   }
 
