@@ -6,15 +6,15 @@ import java.util.Scanner;
 import com.mycompany.proj.domain.Lesson;
 
 public class LessonHandler {
-
-  Scanner keyboard;
-
+  
+  Scanner keyboard; 
+  
   public LessonHandler(Scanner keyboard) {
     this.keyboard = keyboard;
-
+    
   }
-
-  ArrayList lessonList = new ArrayList();
+  
+  LessonList lessonList = new LessonList();
 
   public void addLesson() {
     // lesson 입력
@@ -47,16 +47,13 @@ public class LessonHandler {
   }
 
   public void listLesson() {
-    Object[] objs = lessonList.toArray();
-    for(Object obj : objs) {
-      Lesson lesson = (Lesson) obj;
+    int i = 0;
+    while (i < lessonList.toArray().length) {
       System.out.printf("%d, %-20s, %s ~ %s, %d\n", 
-          lesson.getNum(), lesson.getClassName(),
-          lesson.getStartDate(), lesson.getEndDate(), lesson.getTotalTime());
-
+          lessonList.toArray()[i].getNum(), lessonList.toArray()[i].getClassName(),
+          lessonList.toArray()[i].getStartDate(), lessonList.toArray()[i].getEndDate(), lessonList.toArray()[i].getTotalTime());
+      i++;
     }
 
   }
-
 }
-

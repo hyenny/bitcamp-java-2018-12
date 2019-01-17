@@ -5,14 +5,14 @@ import java.util.Scanner;
 import com.mycompany.proj.domain.Member;
 
 public class MemberHandler {
-
+  
   Scanner keyboard;
-
+  
   public MemberHandler(Scanner keyboard) {
     this.keyboard = keyboard; 
   }
-
-  ArrayList memberList = new ArrayList();
+  
+  MemberList memberList = new MemberList();
 
   public void addMember() {
     Member member = new Member();
@@ -39,23 +39,21 @@ public class MemberHandler {
     member.setTel(keyboard.nextLine());
 
     memberList.add(member);
-
+    
     System.out.println("저장하였습니다");
 
 
   }
 
   public void listMember() {
-    Object[] objs = memberList.toArray();
-    for(Object obj : objs) {
-      Member member = (Member) obj;
+    int i = 0;
+    while(i < memberList.toArray().length) {
       System.out.printf("%d, %s, %s, %s, %s\n", 
-          member.getNum(), member.getName(),
-          member.getEmail(), member.getTel(), member.getJoinDate());
+          memberList.toArray()[i].getNum(), memberList.toArray()[i].getName(),
+          memberList.toArray()[i].getEmail(), memberList.toArray()[i].getTel(), memberList.toArray()[i].getJoinDate());
+      i++;
+
     }
 
-
   }
-
 }
-

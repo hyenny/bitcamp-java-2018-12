@@ -6,7 +6,7 @@ public class MemberList {
   static final int LENTH = 100;
   
   Member[] members;
-  int m_idx;
+  int size;
   
   
  public MemberList() {
@@ -18,10 +18,10 @@ public class MemberList {
   public Member[] toArray() {
     //전체 배열의 크기 100이라면,
     //현재 들어있는 항목만 따로 배열을 만들어 리턴한다. 
-    Member[] arr = new Member[m_idx];
+    Member[] arr = new Member[size];
     int i;
     
-    for(i = 0; i< m_idx; i++) {
+    for(i = 0; i< size; i++) {
       arr[i] = members[i];
     }
     
@@ -30,9 +30,9 @@ public class MemberList {
   
   public void add(Member member) {
 
-    members[m_idx] = member;
+    members[size] = member;
 
-    m_idx++;
+    size++;
   }
 
 }

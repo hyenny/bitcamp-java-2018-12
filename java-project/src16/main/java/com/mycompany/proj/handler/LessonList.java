@@ -6,7 +6,7 @@ public class LessonList {
   static final int LENTH = 100;
   
   Lesson[] lessons;
-  int l_idx;
+  int size;
   
   
  public LessonList() {
@@ -18,10 +18,10 @@ public class LessonList {
   public Lesson[] toArray() {
     //전체 배열의 크기 100이라면,
     //현재 들어있는 항목만 따로 배열을 만들어 리턴한다. 
-    Lesson[] arr = new Lesson[l_idx];
+    Lesson[] arr = new Lesson[size];
     int i;
     
-    for(i = 0; i< l_idx; i++) {
+    for(i = 0; i< size; i++) {
       arr[i] = lessons[i];
     }
     
@@ -30,9 +30,9 @@ public class LessonList {
   
   public void add(Lesson lesson) {
 
-    lessons[l_idx] = lesson;
+    lessons[size] = lesson;
 
-    l_idx++;
+    size++;
   }
 
 }
