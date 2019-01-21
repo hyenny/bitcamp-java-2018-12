@@ -28,6 +28,15 @@ public class App {
       } else if(command.equals("/lesson/list")) {
         l1.listLesson();
 
+      } else if(command.equals("/lesson/detail")) {
+        l1.detailLesson();
+
+      } else if(command.equals("/lesson/update")) {
+        l1.updateLesson();
+
+      } else if(command.equals("/lesson/delete")) {
+        l1.deleteLesson();
+        
       } else if(command.equals("/member/add")) {
         m1.addMember();
 
