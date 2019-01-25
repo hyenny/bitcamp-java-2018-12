@@ -1,15 +1,15 @@
 
 package com.mycompany.proj;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.Stack;
 import com.mycompany.proj.handler.BoardHandler;
 import com.mycompany.proj.handler.LessonHandler;
 import com.mycompany.proj.handler.MemberHandler;
+import com.mycompany.util.ArrayList;
+import com.mycompany.util.LinkedList;
+import com.mycompany.util.Queue;
+import com.mycompany.util.Stack;
+import com.mycompany.util.Iterator;
 
 public class App {
 
@@ -17,9 +17,8 @@ public class App {
 
   // 사용자가 입력한 명령을 보관할 스택 준비
   static Stack<String> commandHistory = new Stack<>();
-  static ArrayDeque<String> commandHistory2 = new ArrayDeque<>();
+  static Queue<String> commandHistory2 = new Queue<>();
 
-  @SuppressWarnings("unchecked")
   public static void main(String[] args) {
 
     // 핸들러가 필요로 하는 의존 객체를 이 클래스에서 만들어 주입해 준다.
@@ -104,21 +103,7 @@ public class App {
         break;
 
       } else if (command.equals("history")) {
-        printCommandHistory(new Iterator<String>(){
-          int index = commandHistory.size() -1;
-
-          @Override
-          public boolean hasNext() {
-            // TODO Auto-generated method stub
-            return index >= 0;
-          }
-
-          @Override
-          public String next() {
-            return commandHistory.get(index--);
-          }
-          
-        });
+        printCommandHistory(commandHistory.iterator());
 
       } else if (command.equals("history2")) {
         printCommandHistory(commandHistory2.iterator());
@@ -167,5 +152,3 @@ public class App {
     return keyboard.nextLine().toLowerCase();
   }
 }
-
-// 목록을 다루는 어플리케이션 프로그래밍 도구 : API
