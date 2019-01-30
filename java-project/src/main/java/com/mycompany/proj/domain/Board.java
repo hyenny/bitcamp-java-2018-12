@@ -39,6 +39,21 @@ public class Board implements Cloneable {
   public void setWriteDate(Date writeDate) {
     this.writeDate = writeDate;
   }
+  
+//인스턴스 필드를 사용하지 않으므로 스태틱 메서드로 만든다.
+  public static Board valueOf(String csv) {
+    String[] values = csv.split(",");
+
+    Board board = new Board();
+
+    board.setNum(Integer.parseInt(values[0]));
+    board.setContents(values[1]);
+    board.setHits(Integer.parseInt(values[2]));
+    board.setWriteDate(Date.valueOf(values[3]));
+
+    return board;
+
+  }
  
 
 

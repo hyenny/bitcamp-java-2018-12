@@ -62,5 +62,29 @@ public class Lesson implements Cloneable {
     this.dayTime = dayTime;
   }
   
+  /**
+   * 
+   * @param csv "번호,제목,내용,시작일(yyyy-MM-dd),종료일(yyyy-MM-dd),총강의시간,일강의시간"
+   * @return
+   */
+  
+  // 인스턴스 필드를 사용하지 않으므로 스태틱 메서드로 만든다.
+  public static Lesson valueOf(String csv) {
+    String[] values = csv.split(",");
+    
+    Lesson lesson = new Lesson();
+    
+    lesson.setNum(Integer.parseInt(values[0]));
+    lesson.setClassName(values[1]);
+    lesson.setContents(values[2]);
+    lesson.setStartDate(Date.valueOf(values[3]));
+    lesson.setEndDate(Date.valueOf(values[4]));
+    lesson.setTotalTime(Integer.parseInt(values[5]));
+    lesson.setDayTime(Integer.parseInt(values[6]));
+    
+    return lesson;
+    
+  }
+  
 
 }

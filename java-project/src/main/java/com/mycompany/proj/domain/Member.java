@@ -12,13 +12,13 @@ public class Member implements Cloneable {
   private String picture;
   private String tel;
   private Date joinDate;
-  
+
   @Override
   public Member clone() throws CloneNotSupportedException {
     return (Member) super.clone();
   }
-  
-  
+
+
   public int getNum() {
     return num;
   }
@@ -61,7 +61,25 @@ public class Member implements Cloneable {
   public void setJoinDate(Date joinDate) {
     this.joinDate = joinDate;
   }
-  
-  
+
+  //인스턴스 필드를 사용하지 않으므로 스태틱 메서드로 만든다.
+  public static Member valueOf(String csv) {
+    String[] values = csv.split(",");
+
+    Member member = new Member();
+
+    member.setNum(Integer.parseInt(values[0]));
+    member.setName(values[1]);
+    member.setEmail(values[2]);
+    member.setPassword(values[3]);
+    member.setPicture(values[4]);
+    member.setTel(values[5]);
+    member.setJoinDate(Date.valueOf(values[6]));
+
+    return member;
+
+  }
+
+
 
 }
