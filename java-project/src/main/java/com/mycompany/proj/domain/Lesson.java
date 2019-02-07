@@ -1,10 +1,12 @@
 
 package com.mycompany.proj.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Lesson implements Cloneable {
-
+public class Lesson implements Cloneable, Serializable {
+  private static final long serialVersionUID = 1L;
+  
   private int num;
   private String className;
   private String contents;
