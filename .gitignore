@@ -8,6 +8,7 @@ build/
 temp/
 Debug/
 Release/
+temp2/
 
 .DS_Store
 .classpath
