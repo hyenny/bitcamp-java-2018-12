@@ -19,14 +19,22 @@ import java.util.Scanner;
  *  > ok + yes 식의 형식이 잘못되었습니다. <== 서버의 응답 
  *  > quit 안녕히 가세요! <== 서버의 응답
  */
-public class CalculatorClient {
+public class CalculatorClient3 {
 
   public static void main(String[] args) {
     try (Scanner keyboard = new Scanner(System.in);
         Socket socket = new Socket("localhost", 8888);
         PrintStream out = new PrintStream(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+      
+      while (true) {
+        String input = in.readLine();
+        System.out.println(input);
+        if(input.length() == 0)
+          break;
+      }
 
+      while (true) {
       System.out.print("> ");
       String input = keyboard.nextLine();
 
@@ -35,6 +43,10 @@ public class CalculatorClient {
 
       String response = in.readLine();
       System.out.println(response);
+      
+      if (input.equalsIgnoreCase("quit"))
+        break;
+      }
 
     } catch (Exception e) {
       e.printStackTrace();
