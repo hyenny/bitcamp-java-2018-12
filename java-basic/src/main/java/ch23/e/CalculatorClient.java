@@ -14,11 +14,13 @@ Stateless는 응답을 받은 후에 연결을 끊는다.
  
  */
 public class CalculatorClient {
-  private static final int CLIENT_ID = 10;
   
   public static void main(String[] args) {
     
     Scanner keyboard = new Scanner(System.in);
+    
+    // 서버에서 클라이언트를 구분할 때 사용할 값
+    long sessionId = 0;
     
     while (true) {
       System.out.print("> ");
@@ -37,14 +39,20 @@ public class CalculatorClient {
           BufferedReader in = new BufferedReader(
               new InputStreamReader(socket.getInputStream()))) {
         
-        out.println(CLIENT_ID);
-        out.flush();
         
         System.out.println("서버와 연결됨! 서버에게 계산 작업을 요청함!");
         
-        out.println(input);
+      
+        out.println(sessionId);   // 서버에 먼저 세션 ID를 보낸다.
+        out.println(input);  
         out.flush();
 
+        if (sessionId ==0) {
+          // 서버에 보낸 세션 ID가 0이면 서버는 새로 세션 ID를 발급하여 보내줄 것이다.
+          // 받아야 한다.
+          sessionId = Long.parseLong(in.readLine());
+          System.out.printf("발급받은 세션 ID: %d\n,", sessionId);
+        }
         String response = in.readLine();
         System.out.println(response);
 
