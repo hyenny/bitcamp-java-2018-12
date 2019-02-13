@@ -1,4 +1,4 @@
-// 10단계 : 데이터를 파일로 관리한다. 
+// 9단계 : 클라이언트 요청을 처리하는 서비스 클래스를 별도의 패키지로 분류하기
 package com.eomcs.lms;
 
 import java.io.ObjectInputStream;

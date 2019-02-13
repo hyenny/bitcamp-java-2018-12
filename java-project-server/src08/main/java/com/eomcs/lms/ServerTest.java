@@ -1,4 +1,4 @@
-// 10단계 : 데이터를 파일로 관리한다. 
+// 7단계: 서버 실행 테스트
 package com.eomcs.lms;
 
 import java.io.ObjectInputStream;
