@@ -1,36 +1,31 @@
 package com.mycompany.proj.handler;
 
+
 import java.sql.Date;
-import java.util.List;
 import java.util.Scanner;
+import com.mycompany.proj.agent.LessonAgent;
 import com.mycompany.proj.domain.Lesson;
+
 
 public class LessonUpdateCommand implements Command {
 
   Scanner keyboard;
-  List<Lesson> list;
-
-  public LessonUpdateCommand(Scanner keyboard, List<Lesson> list) {
+  LessonAgent lessonAgent;
+  
+  public LessonUpdateCommand(Scanner keyboard, LessonAgent lessonAgent) {
     this.keyboard = keyboard;
-    this.list = list; 
+    this.lessonAgent = lessonAgent;
   }
-
+  
 
   @Override
   public void execute() {
     System.out.print("번호? ");
     int no = Integer.parseInt(keyboard.nextLine());
 
-    int index = indexOfLesson(no);
-    if (index == -1) {
-      System.out.println("해당 수업을 찾을 수 없습니다.");
-      return;
-    }
-    
-    Lesson lesson = list.get(index);
-    
     try {
-      // 일단 기존 값을 복제한다.
+      Lesson lesson = lessonAgent.get(no);
+    
       Lesson temp = lesson.clone();
       
       System.out.printf("수업명(%s)? ", lesson.getClassName());
@@ -58,24 +53,11 @@ public class LessonUpdateCommand implements Command {
       if ((input = keyboard.nextLine()).length() > 0)
         temp.setDayTime(Integer.parseInt(input));
       
-      list.set(index, temp);
-      
-      System.out.println("수업을 변경했습니다.");
+      lessonAgent.update(temp);
+      System.out.println("변경했습니다.");
       
     } catch (Exception e) {
-      System.out.println("변경 중 오류 발생!");
+      System.out.printf("실행 오류! : %s\n", e.getMessage());
     }
   }
-  
-  private int indexOfLesson(int no) {
-    for (int i = 0; i < list.size(); i++) {
-      Lesson l = list.get(i);
-      if (l.getNum() == no)
-        return i;
-    }
-    return -1;
-  }
-
-
-
 }

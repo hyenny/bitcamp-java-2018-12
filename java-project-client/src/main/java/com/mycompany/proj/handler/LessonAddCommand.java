@@ -1,21 +1,21 @@
 package com.mycompany.proj.handler;
 
 import java.sql.Date;
-import java.util.List;
 import java.util.Scanner;
-import com.mycompany.proj.domain.Board;
+import com.mycompany.proj.agent.LessonAgent;
 import com.mycompany.proj.domain.Lesson;
+
 
 public class LessonAddCommand implements Command {
 
   Scanner keyboard;
-  List<Lesson> list;
-
-  public LessonAddCommand(Scanner keyboard, List<Lesson> list) {
+  LessonAgent lessonAgent;
+  
+  public LessonAddCommand(Scanner keyboard, LessonAgent lessonAgent) {
     this.keyboard = keyboard;
-    this.list = list; 
+    this.lessonAgent = lessonAgent;
   }
-
+  
 
   @Override
   public void execute() {
@@ -42,11 +42,13 @@ public class LessonAddCommand implements Command {
     System.out.print("일수업시간? ");
     lesson.setDayTime(Integer.parseInt(keyboard.nextLine()));
 
-    list.add(lesson);
-
-    System.out.println("저장하였습니다.");
+    try {
+      lessonAgent.add(lesson);
+      System.out.println("저장하였습니다.");
+      
+    } catch (Exception e) {
+      System.out.printf("실행 오류! : %s\n", e.getMessage());
+    }
   }
-
-
-
+  
 }
