@@ -2,15 +2,15 @@ package com.eomcs.lms.handler;
 
 
 import java.util.Scanner;
+import com.eomcs.lms.dao.LessonDaoImpl;
 import com.eomcs.lms.domain.Lesson;
-import com.eomcs.lms.proxy.LessonDaoProxy;
 
 public class LessonDetailCommand implements Command {
 
   Scanner keyboard;
-  LessonDaoProxy lessonDao;
+  LessonDaoImpl lessonDao;
   
-  public LessonDetailCommand(Scanner keyboard, LessonDaoProxy lessonDao) {
+  public LessonDetailCommand(Scanner keyboard, LessonDaoImpl lessonDao) {
     this.keyboard = keyboard;
     this.lessonDao = lessonDao;
   }

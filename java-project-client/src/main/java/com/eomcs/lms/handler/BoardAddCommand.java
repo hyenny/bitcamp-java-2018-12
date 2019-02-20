@@ -2,16 +2,16 @@ package com.eomcs.lms.handler;
 
 import java.sql.Date;
 import java.util.Scanner;
+import com.eomcs.lms.dao.BoardDaoImpl;
 import com.eomcs.lms.domain.Board;
-import com.eomcs.lms.proxy.BoardDaoProxy;
 
 
 public class BoardAddCommand implements Command {
   
   Scanner keyboard;
-  BoardDaoProxy boardDao; // 서버의 BoardDaoImpl 객체를
+  BoardDaoImpl boardDao; // 서버의 BoardDaoImpl 객체를
   
-  public BoardAddCommand(Scanner keyboard, BoardDaoProxy boardAgent) {
+  public BoardAddCommand(Scanner keyboard, BoardDaoImpl boardAgent) {
     this.keyboard = keyboard;
     this.boardDao = boardAgent;
   }

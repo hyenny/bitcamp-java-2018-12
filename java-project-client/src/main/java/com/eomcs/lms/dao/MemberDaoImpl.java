@@ -1,27 +1,25 @@
+package com.eomcs.lms.dao;
 
-package com.eomcs.lms.proxy;
+
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
-import com.eomcs.lms.dao.BoardDao;
-import com.eomcs.lms.domain.Board;
+import com.eomcs.lms.domain.Member;
 
-public class BoardDaoProxy implements BoardDao {
+
+public class MemberDaoImpl implements MemberDao {
   
   String serverAddr;
   int port;
   String rootPath;
   
-  public BoardDaoProxy(String serverAddr, int port, String rootPath) {
-    this.serverAddr = serverAddr;
-    this.port = port;
-    this.rootPath = rootPath;
+  public MemberDaoImpl() {
   }
   
   @SuppressWarnings("unchecked")
-  public List<Board> findAll() {
+  public List<Member> findAll() {
     
     try (Socket socket = new Socket(this.serverAddr, this.port);
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
@@ -37,14 +35,14 @@ public class BoardDaoProxy implements BoardDao {
       if (!status.equals("OK")) 
         throw new Exception("서버의 데이터 목록 가져오기 실패!");
       
-      return (List<Board>) in.readObject();
+      return (List<Member>) in.readObject();
       
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
   
-  public void insert(Board board) {
+  public void insert(Member member) {
     
     try (Socket socket = new Socket(this.serverAddr, this.port);
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
@@ -54,7 +52,7 @@ public class BoardDaoProxy implements BoardDao {
       if (!in.readUTF().equals("OK"))
         throw new Exception("서버에서 해당 명령어를 처리하지 못합니다.");
       
-      out.writeObject(board);
+      out.writeObject(member);
       out.flush();
       
       String status = in.readUTF();
@@ -67,7 +65,7 @@ public class BoardDaoProxy implements BoardDao {
     }
   }
   
-  public Board findByNo(int no) {
+  public Member findByNo(int no) {
     
     try (Socket socket = new Socket(this.serverAddr, this.port);
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
@@ -86,14 +84,14 @@ public class BoardDaoProxy implements BoardDao {
       if (!status.equals("OK")) 
         throw new Exception("서버의 데이터 가져오기 실패!");
       
-      return (Board) in.readObject();
+      return (Member) in.readObject();
       
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
   
-  public int update(Board board) {
+  public int update(Member member) {
     
     try (Socket socket = new Socket(this.serverAddr, this.port);
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
@@ -104,7 +102,7 @@ public class BoardDaoProxy implements BoardDao {
       if (!in.readUTF().equals("OK"))
         throw new Exception("서버에서 해당 명령어를 처리하지 못합니다.");
       
-      out.writeObject(board);
+      out.writeObject(member);
       out.flush();
       
       String status = in.readUTF();
@@ -144,6 +142,10 @@ public class BoardDaoProxy implements BoardDao {
     }
   }
 }
+
+
+
+
 
 
 
