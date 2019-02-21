@@ -1,7 +1,7 @@
 package com.eomcs.lms.handler;
 
 import java.util.Scanner;
-import com.eomcs.lms.dao.MemberDaoImpl;
+import com.eomcs.lms.dao.mariadb.MemberDaoImpl;
 import com.eomcs.lms.domain.Member;
 
 public class MemberUpdateCommand implements Command {
@@ -21,6 +21,10 @@ public class MemberUpdateCommand implements Command {
 
     try {
       Member member = memberDao.findByNo(no);
+      if (member == null) {
+        System.out.println("해당 번호의 회원이 없습니다.");
+        return;
+      }
     
       Member temp = member.clone();
       
