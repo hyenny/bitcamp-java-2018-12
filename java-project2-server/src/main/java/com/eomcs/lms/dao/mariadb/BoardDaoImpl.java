@@ -1,4 +1,3 @@
-// DBVMS 적용
 package com.eomcs.lms.dao.mariadb;
 
 import java.sql.Connection;
@@ -8,44 +7,46 @@ import java.util.ArrayList;
 import java.util.List;
 import com.eomcs.lms.dao.BoardDao;
 import com.eomcs.lms.domain.Board;
+import com.eomcs.util.DataSource;
 
 public class BoardDaoImpl implements BoardDao {
 
-  Connection con;
-  public BoardDaoImpl(Connection con) {
-    this.con = con;
+  // DataSource 의존 객체 선언
+  DataSource dataSource;
+  
+  public BoardDaoImpl(DataSource dataSource) {
+    this.dataSource = dataSource;
   }
-
+  
   public List<Board> findAll() {
-    try {
-      try (PreparedStatement stmt = con.prepareStatement(
-          "select board_id, conts, cdt, vw_cnt from lms_board"
-              + " order by board_id desc")) {
+    Connection con = dataSource.getConnection();
+    
+    try (PreparedStatement stmt = con.prepareStatement(
+        "select board_id, conts, cdt, vw_cnt from lms_board"
+            + " order by board_id desc")) {
 
-        try (ResultSet rs = stmt.executeQuery()) {
+      try (ResultSet rs = stmt.executeQuery()) {
 
-          List<Board> list = new ArrayList<>();
-          while (rs.next()) {
-            Board board = new Board();
-            board.setNum(rs.getInt("board_id"));
-            board.setContents(rs.getString("conts"));
-            board.setWriteDate(rs.getDate("cdt"));
-            board.setHits(rs.getInt("vw_cnt"));
+        ArrayList<Board> list = new ArrayList<>();
+        while (rs.next()) {
+          Board board = new Board();
+          board.setNum(rs.getInt("board_id"));
+          board.setContents(rs.getString("conts"));
+          board.setWriteDate(rs.getDate("cdt"));
+          board.setHits(rs.getInt("vw_cnt"));
 
-            list.add(board);
-
-          }
-          return list;
+          list.add(board);
         }
+        return list;
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
     }
-    return null;
   }
 
-
   public void insert(Board board) {
+    Connection con = dataSource.getConnection();
+    
     try (PreparedStatement stmt = con.prepareStatement(
         "insert into lms_board(conts) values(?)")) {
 
@@ -54,11 +55,13 @@ public class BoardDaoImpl implements BoardDao {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-
   }
 
   public Board findByNo(int no) {
+    Connection con = dataSource.getConnection();
+    
     try {
+      // 조회수 증가시키기
       try (PreparedStatement stmt = con.prepareStatement(
           "update lms_board set vw_cnt = vw_cnt + 1 where board_id = ?")) {
         stmt.setInt(1, no);
@@ -89,8 +92,9 @@ public class BoardDaoImpl implements BoardDao {
     }
   }
 
-
   public int update(Board board) {
+    Connection con = dataSource.getConnection();
+    
     try (PreparedStatement stmt = con.prepareStatement(
         "update lms_board set conts = ? where board_id = ?")) {
 
@@ -103,17 +107,19 @@ public class BoardDaoImpl implements BoardDao {
     }
   }
 
-
   public int delete(int no) {
+    Connection con = dataSource.getConnection();
+    
     try (PreparedStatement stmt = con.prepareStatement(
         "delete from lms_board where board_id = ?")) {
+
       stmt.setInt(1, no);
+
       return stmt.executeUpdate();
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
-
 }
 
 
