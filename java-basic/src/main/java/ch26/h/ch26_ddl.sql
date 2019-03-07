@@ -111,4 +111,18 @@ where
     from x_board b
       join x_board_file f on b.board_id = f.board_id;
       
+-- 게시물 데이터와 첨부파일 데이터를 함께 조회하기
+  select
+    b.board_id,
+    b.title,
+    b.contents,
+    b.created_date,
+    b.view_count,
+    f.board_file_id,
+    f.file_path
+  from x_board b
+    left outer join x_board_file f on b.board_id = f.board_id
+  where
+    b.board_id = 1;
+      
       

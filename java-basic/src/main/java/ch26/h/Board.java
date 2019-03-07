@@ -1,6 +1,7 @@
-package ch26.prac;
+package ch26.h;
 
 import java.sql.Date;
+import java.util.List;
 
 public class Board {
   private int no;
@@ -9,7 +10,11 @@ public class Board {
   private Date createdDate;
   private int viewCount;
   
+  // 자식 테이블(x_board_file)의 데이터를 여러 개 받을 필드를 선언한다.
+  private List<AttachFile> attachFiles;
   
+  // 만약 자식 테이블의 데이터를 한 개만 받는다면 다음과 같이 선언하면 된다.
+  //private AttachFile attachFile;
   
   @Override
   public String toString() {
@@ -47,6 +52,16 @@ public class Board {
   public void setViewCount(int viewCount) {
     this.viewCount = viewCount;
   }
+
+  public List<AttachFile> getAttachFiles() {
+    return attachFiles;
+  }
+
+  public void setAttachFiles(List<AttachFile> attachFiles) {
+    this.attachFiles = attachFiles;
+  }
+  
+  
 
   
   
