@@ -15,11 +15,6 @@ public class Member implements Cloneable, Serializable {
   private String tel;
   private Date joinDate;
 
-  @Override
-  public Member clone() throws CloneNotSupportedException {
-    return (Member) super.clone();
-  }
-
 
   public int getNum() {
     return num;
