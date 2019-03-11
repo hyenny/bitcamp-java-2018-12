@@ -1,4 +1,4 @@
-// 13단계: Mybatis 퍼시스턴스 프레임워크 적응하기
+
 
 
 package com.eomcs.lms;

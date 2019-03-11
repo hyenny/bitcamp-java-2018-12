@@ -14,13 +14,17 @@
 		<result column="tel" property="tel" />
 		<result column="cdt" property="joinDate" />
 	</resultMap>
+	
+	<sql id="default-columns">
+	 member_id,
+   name,
+   email,
+   tel
+	</sql>
 
 	<select id="findAll" resultMap="memberMap">
 		select
-		  member_id,
-		  name,
-		  email,
-		  tel
+      <include refid="default-columns"/>
 		from 
 		  lms_member
 		order by
@@ -29,10 +33,7 @@
 
 	<select id="findByKeyword" resultMap="memberMap" parameterType="string">
 		select
-		  member_id,
-		  name,
-		  email,
-		  tel
+      <include refid="default-columns"/>
 		from
 		  lms_member
 		<where>

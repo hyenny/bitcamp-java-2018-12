@@ -14,28 +14,28 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
   public PhotoFileDaoImpl(SqlSessionFactory sqlSessionFactory) {
     this.sqlSessionFactory = sqlSessionFactory;
   }
-
+  
   @Override
   public List<PhotoFile> findByPhotoBoardNo(int photoBoardNo) {
-    try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      return sqlSession.selectList("PhotoFileMapper.findByPhotoBoardNo", photoBoardNo);
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      return sqlSession.selectList(
+          "PhotoFileMapper.findByPhotoBoardNo", photoBoardNo);
     }
   }
 
   @Override
-  public void insert(PhotoFile photoFile) {
-    try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+  public void insert(List<PhotoFile> photoFile) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       sqlSession.insert("PhotoFileMapper.insert", photoFile);
-      sqlSession.commit();
+
     }
   }
 
   @Override
   public int deleteByPhotoBoardNo(int photoBoardNo) {
-    try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      int count = sqlSession.delete("PhotoFileMapper.deleteByPhotoBoardNo", photoBoardNo);
-      sqlSession.commit();
-      return count;
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      return sqlSession.delete(
+          "PhotoFileMapper.deleteByPhotoBoardNo", photoBoardNo);
     }
   }
 
