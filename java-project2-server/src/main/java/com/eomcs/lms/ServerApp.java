@@ -1,5 +1,8 @@
-
-
+// 16단계: DAO 구현체 자동 생성하기
+// => java.lang.reflect.Proxy 를 이용하여 DAO 인터페이스를 구현한 객체
+//
+// 작업:
+// 1). DaoInvocationHandler
 
 package com.eomcs.lms;
 import java.io.BufferedReader;

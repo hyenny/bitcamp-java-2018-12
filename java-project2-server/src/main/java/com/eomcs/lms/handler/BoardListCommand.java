@@ -2,16 +2,16 @@ package com.eomcs.lms.handler;
 
 
 import java.util.List;
-import com.eomcs.lms.dao.mariadb.BoardDaoImpl;
+import com.eomcs.lms.dao.BoardDao;
 import com.eomcs.lms.domain.Board;
 
 
 public class BoardListCommand extends AbstractCommand {
 
-  BoardDaoImpl boardDao;
+  BoardDao boardDao;
   
-  public BoardListCommand(BoardDaoImpl boardAgent) {
-    this.boardDao = boardAgent;
+  public BoardListCommand(BoardDao boardDao) {
+    this.boardDao = boardDao;
   }
 
   @Override

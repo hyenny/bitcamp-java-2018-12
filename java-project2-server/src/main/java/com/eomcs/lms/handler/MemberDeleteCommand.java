@@ -1,14 +1,14 @@
 package com.eomcs.lms.handler;
 
 
-import com.eomcs.lms.dao.mariadb.MemberDaoImpl;
+import com.eomcs.lms.dao.MemberDao;
 
 
 public class MemberDeleteCommand extends AbstractCommand {
 
-  MemberDaoImpl memberDao;
+  MemberDao memberDao;
 
-  public MemberDeleteCommand(MemberDaoImpl memberDao) {
+  public MemberDeleteCommand(MemberDao memberDao) {
     this.memberDao = memberDao;
   }
 

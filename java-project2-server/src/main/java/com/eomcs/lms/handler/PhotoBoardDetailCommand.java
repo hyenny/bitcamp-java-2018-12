@@ -30,6 +30,11 @@ public class PhotoBoardDetailCommand extends AbstractCommand {
       response.println("해당 사진을 찾을 수 없습니다.");
       return;
     }
+    
+    
+    // 게시물 데이터를 가져왔으면 조회수를 증가시킨다.
+    photoBoardDao.increaseCount(no);
+    
     response.println(String.format("제목: %s", board.getTitle()));
     response.println(String.format("작성일: %s", board.getWriteDate()));
     response.println(String.format("조회수: %d", board.getHits()));

@@ -1,14 +1,14 @@
 package com.eomcs.lms.handler;
 
 import java.util.List;
-import com.eomcs.lms.dao.mariadb.PhotoBoardDaoImpl;
+import com.eomcs.lms.dao.PhotoBoardDao;
 import com.eomcs.lms.domain.PhotoBoard;
 
 public class PhotoBoardListCommand extends AbstractCommand {
   
-  PhotoBoardDaoImpl photoBoardDao;
+  PhotoBoardDao photoBoardDao;
   
-  public PhotoBoardListCommand(PhotoBoardDaoImpl photoBoardDao) {
+  public PhotoBoardListCommand(PhotoBoardDao photoBoardDao) {
     this.photoBoardDao = photoBoardDao;
   }
 

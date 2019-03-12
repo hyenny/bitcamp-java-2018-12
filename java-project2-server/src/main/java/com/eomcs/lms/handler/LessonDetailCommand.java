@@ -1,14 +1,14 @@
 package com.eomcs.lms.handler;
 
 
-import com.eomcs.lms.dao.mariadb.LessonDaoImpl;
+import com.eomcs.lms.dao.LessonDao;
 import com.eomcs.lms.domain.Lesson;
 
 public class LessonDetailCommand extends AbstractCommand {
 
-  LessonDaoImpl lessonDao;
+  LessonDao lessonDao;
 
-  public LessonDetailCommand(LessonDaoImpl lessonDao) {
+  public LessonDetailCommand(LessonDao lessonDao) {
     this.lessonDao = lessonDao;
   }
 

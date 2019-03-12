@@ -1,13 +1,13 @@
 package com.eomcs.lms.handler;
 
-import com.eomcs.lms.dao.mariadb.MemberDaoImpl;
+import com.eomcs.lms.dao.MemberDao;
 import com.eomcs.lms.domain.Member;
 
 public class MemberUpdateCommand extends AbstractCommand {
 
-  MemberDaoImpl memberDao;
+  MemberDao memberDao;
 
-  public MemberUpdateCommand(MemberDaoImpl memberDao) {
+  public MemberUpdateCommand(MemberDao memberDao) {
     this.memberDao = memberDao;
   }
 

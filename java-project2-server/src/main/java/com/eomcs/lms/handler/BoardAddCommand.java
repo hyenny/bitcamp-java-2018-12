@@ -1,15 +1,15 @@
 package com.eomcs.lms.handler;
 
-import com.eomcs.lms.dao.mariadb.BoardDaoImpl;
+import com.eomcs.lms.dao.BoardDao;
 import com.eomcs.lms.domain.Board;
 
 
 public class BoardAddCommand extends AbstractCommand {
 
-  BoardDaoImpl boardDao; // 서버의 BoardDaoImpl 객체를
+  BoardDao boardDao; // 서버의 BoardDaoImpl 객체를
 
-  public BoardAddCommand(BoardDaoImpl boardAgent) {
-    this.boardDao = boardAgent;
+  public BoardAddCommand(BoardDao boardDao) {
+    this.boardDao = boardDao;
   }
 
   @Override

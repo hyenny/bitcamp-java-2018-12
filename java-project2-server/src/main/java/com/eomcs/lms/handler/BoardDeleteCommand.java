@@ -1,13 +1,13 @@
 package com.eomcs.lms.handler;
 
-import com.eomcs.lms.dao.mariadb.BoardDaoImpl;
+import com.eomcs.lms.dao.BoardDao;
 
 public class BoardDeleteCommand extends AbstractCommand {
 
-  BoardDaoImpl boardDao;
+  BoardDao boardDao;
 
-  public BoardDeleteCommand(BoardDaoImpl boardAgent) {
-    this.boardDao = boardAgent;
+  public BoardDeleteCommand(BoardDao boardDao) {
+    this.boardDao = boardDao;
   }
 
   @Override

@@ -1,14 +1,14 @@
 package com.eomcs.lms.handler;
 
-import com.eomcs.lms.dao.mariadb.BoardDaoImpl;
+import com.eomcs.lms.dao.BoardDao;
 import com.eomcs.lms.domain.Board;
 
 public class BoardUpdateCommand extends AbstractCommand {
 
-  BoardDaoImpl boardDao;
+  BoardDao boardDao;
 
-  public BoardUpdateCommand(BoardDaoImpl boardAgent) {
-    this.boardDao = boardAgent;
+  public BoardUpdateCommand(BoardDao boardDao) {
+    this.boardDao = boardDao;
   }
 
   @Override
