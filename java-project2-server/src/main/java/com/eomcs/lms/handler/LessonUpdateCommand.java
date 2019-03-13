@@ -9,6 +9,7 @@ public class LessonUpdateCommand extends AbstractCommand {
   
   public LessonUpdateCommand(LessonDao lessonDao) {
     this.lessonDao = lessonDao;
+    this.name = "/lesson/update";
   }
   
 
@@ -24,13 +25,13 @@ public class LessonUpdateCommand extends AbstractCommand {
     
     // 변경할 값만 temp에 저장할 것이기 때문에 기존 데이터를 복제하지 않는다. 
     Lesson temp = new Lesson();
-    temp.setNum(no);
+    temp.setNo(no);
     
     // mybatis는 필드의 값이 null이 아니거나, 숫자인 경우 0인 아니면 해당 컬럼을 값을 update 한다.
     String input = response.requestString(String.format(
-        "수업명(%s)?", lesson.getClassName()));
+        "수업명(%s)?", lesson.getTitle()));
     if (input.length() > 0)
-      temp.setClassName(input);
+      temp.setTitle(input);
     
     input = response.requestString(String.format(
         "설명(%s)?", lesson.getContents()));
@@ -48,21 +49,21 @@ public class LessonUpdateCommand extends AbstractCommand {
       temp.setEndDate(Date.valueOf(input));
     
     input = response.requestString(String.format(
-        "총수업시간(%d)?", lesson.getTotalTime()));
+        "총수업시간(%d)?", lesson.getTotalHours()));
     if (input.length() > 0)
-      temp.setTotalTime(Integer.parseInt(input));
+      temp.setTotalHours(Integer.parseInt(input));
     
     input = response.requestString(String.format(
-        "일수업시간(%d)?", lesson.getDayTime()));
+        "일수업시간(%d)?", lesson.getDayHours()));
     if (input.length() > 0)
-      temp.setDayTime(Integer.parseInt(input));
+      temp.setDayHours(Integer.parseInt(input));
     
-    if (temp.getClassName() != null
+    if (temp.getTitle() != null
         || temp.getContents() != null
         || temp.getStartDate() != null
         || temp.getEndDate() != null
-        || temp.getTotalTime() > 0
-        || temp.getDayTime() > 0) {
+        || temp.getTotalHours() > 0
+        || temp.getDayHours() > 0) {
       
       lessonDao.update(temp);
       response.println("변경했습니다.");

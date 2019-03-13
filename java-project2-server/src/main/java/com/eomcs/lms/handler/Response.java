@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.Date;
 
 public class Response {
+  
   BufferedReader in;
   PrintWriter out;
   
@@ -31,7 +32,17 @@ public class Response {
   
   public Date requestDate(String title) throws Exception {
     return Date.valueOf(this.requestString(title));
-  }
-
-
+  }  
 }
+
+
+
+
+
+
+
+
+
+
+
+

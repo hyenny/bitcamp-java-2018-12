@@ -15,6 +15,7 @@ public class PhotoBoardDetailCommand extends AbstractCommand {
       PhotoFileDao photoFileDao) {
     this.photoBoardDao = photoBoardDao;
     this.photoFileDao = photoFileDao;
+    this.name = "/photoboard/detail";
   }
 
   @Override
@@ -31,15 +32,13 @@ public class PhotoBoardDetailCommand extends AbstractCommand {
       return;
     }
     
-    
-    // 게시물 데이터를 가져왔으면 조회수를 증가시킨다.
-    photoBoardDao.increaseCount(no);
+    photoBoardDao.increaseCount(no); // 조회수 증가
     
     response.println(String.format("제목: %s", board.getTitle()));
-    response.println(String.format("작성일: %s", board.getWriteDate()));
-    response.println(String.format("조회수: %d", board.getHits()));
+    response.println(String.format("작성일: %s", board.getCreatedDate()));
+    response.println(String.format("조회수: %d", board.getViewCount()));
     response.println(String.format("수업: %s(%s ~ %s)", 
-        board.getLesson().getClassName(),
+        board.getLesson().getTitle(),
         board.getLesson().getStartDate(),
         board.getLesson().getEndDate()));
     
@@ -51,3 +50,8 @@ public class PhotoBoardDetailCommand extends AbstractCommand {
     
   }
 }
+
+
+
+
+

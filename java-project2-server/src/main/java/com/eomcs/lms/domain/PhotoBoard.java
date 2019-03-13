@@ -7,23 +7,21 @@ import java.util.List;
 public class PhotoBoard implements Serializable {
   private static final long serialVersionUID = 1L;
   
-  private int num;
+  private int no;
   private String title;
-  private int hits;
-  private Date writeDate;
+  private Date createdDate;
+  private int viewCount;
   private int lessonNo;
   
   // 조인된 자식 테이블의 데이터를 보관할 필드
   private Lesson lesson;
   private List<PhotoFile> files;
   
-  
-  
-  public int getNum() {
-    return num;
+  public int getNo() {
+    return no;
   }
-  public void setNum(int num) {
-    this.num = num;
+  public void setNo(int no) {
+    this.no = no;
   }
   public String getTitle() {
     return title;
@@ -31,17 +29,17 @@ public class PhotoBoard implements Serializable {
   public void setTitle(String title) {
     this.title = title;
   }
-  public int getHits() {
-    return hits;
+  public Date getCreatedDate() {
+    return createdDate;
   }
-  public void setHits(int hits) {
-    this.hits = hits;
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
   }
-  public Date getWriteDate() {
-    return writeDate;
+  public int getViewCount() {
+    return viewCount;
   }
-  public void setWriteDate(Date writeDate) {
-    this.writeDate = writeDate;
+  public void setViewCount(int viewCount) {
+    this.viewCount = viewCount;
   }
   public int getLessonNo() {
     return lessonNo;
@@ -62,10 +60,4 @@ public class PhotoBoard implements Serializable {
     this.lesson = lesson;
   }
   
-  
-  
-  
-  
-  
-
 }

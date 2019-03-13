@@ -20,6 +20,7 @@ public class PhotoBoardUpdateCommand extends AbstractCommand {
     this.photoBoardDao = photoBoardDao;
     this.photoFileDao = photoFileDao;
     this.txManager = txManager;
+    this.name = "/photoboard/update";
   }
   
   @Override
@@ -27,9 +28,9 @@ public class PhotoBoardUpdateCommand extends AbstractCommand {
     txManager.beginTransaction();
     try {
       PhotoBoard board = new PhotoBoard();
-      board.setNum(response.requestInt("번호?"));
+      board.setNo(response.requestInt("번호?"));
       
-      PhotoBoard origin = photoBoardDao.findByNo(board.getNum());
+      PhotoBoard origin = photoBoardDao.findByNo(board.getNo());
       if (origin == null) {
         response.println("해당 번호의 사진이 없습니다.");
         return;
@@ -45,7 +46,7 @@ public class PhotoBoardUpdateCommand extends AbstractCommand {
       
       // 변경하려면 사진 게시물의 첨부 파일을 출력한다.
       response.println("사진 파일:");
-      List<PhotoFile> files = photoFileDao.findByPhotoBoardNo(board.getNum());
+      List<PhotoFile> files = photoFileDao.findByPhotoBoardNo(board.getNo());
       for (PhotoFile file : files) {
         response.println("> " + file.getFilePath());
       }
@@ -56,13 +57,12 @@ public class PhotoBoardUpdateCommand extends AbstractCommand {
       input = response.requestString("사진을 변경하시겠습니까?(y/N)");
       if (input.equalsIgnoreCase("y")) {
         // 먼저 기존 첨부 파일을 삭제한다.
-        photoFileDao.deleteByPhotoBoardNo(board.getNum());
+        photoFileDao.deleteByPhotoBoardNo(board.getNo());
         
         // 그리고 새 첨부 파일을 추가한다.
         response.println("최소 한 개의 사진 파일을 등록해야 합니다.");
         response.println("파일명 입력 없이 그냥 엔터를 치면 파일 추가를 마칩니다.");
         
-
         ArrayList<PhotoFile> photoFiles = new ArrayList<>();
         while (true) {
           String filePath = response.requestString("사진 파일?");
@@ -76,13 +76,13 @@ public class PhotoBoardUpdateCommand extends AbstractCommand {
           }
           PhotoFile file = new PhotoFile();
           file.setFilePath(filePath);
-          file.setPhotoBoardNo(board.getNum());// 사진 게시물을 입력한 후 자동 생성된 PK 값을 꺼낸다.
+          file.setPhotoBoardNo(board.getNo());// 사진 게시물을 입력한 후 자동 생성된 PK 값을 꺼낸다.
           
-          // 첨부파일을 DB에 저장
           photoFiles.add(file);
         }
-        
+        // 한 번에 파일 정보를 insert 한다.
         photoFileDao.insert(photoFiles);
+        
       }
       
       response.println("변경했습니다.");
@@ -94,3 +94,9 @@ public class PhotoBoardUpdateCommand extends AbstractCommand {
     }
   }
 }
+
+
+
+
+
+

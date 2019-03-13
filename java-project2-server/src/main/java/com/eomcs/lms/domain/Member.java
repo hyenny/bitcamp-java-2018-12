@@ -1,26 +1,34 @@
-
 package com.eomcs.lms.domain;
-
 import java.io.Serializable;
 import java.sql.Date;
 
 public class Member implements Cloneable, Serializable {
-
   private static final long serialVersionUID = 1L;
-  private int num;
+  
+  private int no;
   private String name;
-  private  String email;
+  private String email;
   private String password;
-  private String picture;
+  private String photo;
   private String tel;
-  private Date joinDate;
-
-
-  public int getNum() {
-    return num;
+  private Date registeredDate;
+  
+  @Override
+  public Member clone() throws CloneNotSupportedException {
+    return (Member) super.clone();
   }
-  public void setNum(int num) {
-    this.num = num;
+  
+  @Override
+  public String toString() {
+    return "Member [no=" + no + ", name=" + name + ", email=" + email + ", password=" + password
+        + ", photo=" + photo + ", tel=" + tel + ", registeredDate=" + registeredDate + "]";
+  }
+
+  public int getNo() {
+    return no;
+  }
+  public void setNo(int no) {
+    this.no = no;
   }
   public String getName() {
     return name;
@@ -40,11 +48,11 @@ public class Member implements Cloneable, Serializable {
   public void setPassword(String password) {
     this.password = password;
   }
-  public String getPicture() {
-    return picture;
+  public String getPhoto() {
+    return photo;
   }
-  public void setPicture(String picture) {
-    this.picture = picture;
+  public void setPhoto(String photo) {
+    this.photo = photo;
   }
   public String getTel() {
     return tel;
@@ -52,31 +60,12 @@ public class Member implements Cloneable, Serializable {
   public void setTel(String tel) {
     this.tel = tel;
   }
-  public Date getJoinDate() {
-    return joinDate;
+  public Date getRegisteredDate() {
+    return registeredDate;
   }
-  public void setJoinDate(Date joinDate) {
-    this.joinDate = joinDate;
+  public void setRegisteredDate(Date registeredDate) {
+    this.registeredDate = registeredDate;
   }
-
-  //인스턴스 필드를 사용하지 않으므로 스태틱 메서드로 만든다.
-  public static Member valueOf(String csv) {
-    String[] values = csv.split(",");
-
-    Member member = new Member();
-
-    member.setNum(Integer.parseInt(values[0]));
-    member.setName(values[1]);
-    member.setEmail(values[2]);
-    member.setPassword(values[3]);
-    member.setPicture(values[4]);
-    member.setTel(values[5]);
-    member.setJoinDate(Date.valueOf(values[6]));
-
-    return member;
-
-  }
-
-
-
+  
+  
 }

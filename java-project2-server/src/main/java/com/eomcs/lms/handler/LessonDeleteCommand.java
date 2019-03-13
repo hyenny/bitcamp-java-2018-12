@@ -23,6 +23,7 @@ public class LessonDeleteCommand extends AbstractCommand {
     this.photoBoardDao = photoBoardDao;
     this.photoFileDao = photoFileDao;
     this.txManager = txManager;
+    this.name = "/lesson/delete";
   }
   
 
@@ -37,8 +38,8 @@ public class LessonDeleteCommand extends AbstractCommand {
       
       List<PhotoBoard> boards = photoBoardDao.findAll(params);
       for (PhotoBoard board : boards) {
-        photoFileDao.deleteByPhotoBoardNo(board.getNum());
-        photoBoardDao.delete(board.getNum());
+        photoFileDao.deleteByPhotoBoardNo(board.getNo());
+        photoBoardDao.delete(board.getNo());
       }
       
       if (lessonDao.delete(no) == 0) {
@@ -47,10 +48,14 @@ public class LessonDeleteCommand extends AbstractCommand {
       }
       response.println("삭제했습니다.");
       txManager.commit();
-    
+      
     } catch (Exception e) {
       txManager.rollback();
-      response.println("삭제 중 오류 발생");
+      response.println("삭제 중 오류 발생.");
     }
   }
 }
+
+
+
+

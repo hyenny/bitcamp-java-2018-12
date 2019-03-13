@@ -1,27 +1,31 @@
-
 package com.eomcs.lms.domain;
-
 import java.io.Serializable;
 import java.sql.Date;
 
 public class Board implements Cloneable, Serializable {
-  
   private static final long serialVersionUID = 1L;
-  private int num;
+
+  private int no;
   private String contents;
-  private int hits;
-  private Date writeDate;
+  private Date createdDate;
+  private int viewCount;
   
   @Override
   public Board clone() throws CloneNotSupportedException {
     return (Board) super.clone();
   }
   
-  public int getNum() {
-    return num;
+  @Override
+  public String toString() {
+    return "Board [no=" + no + ", contents=" + contents + ", createdDate=" + createdDate
+        + ", viewCount=" + viewCount + "]";
   }
-  public void setNum(int num) {
-    this.num = num;
+
+  public int getNo() {
+    return no;
+  }
+  public void setNo(int no) {
+    this.no = no;
   }
   public String getContents() {
     return contents;
@@ -29,34 +33,18 @@ public class Board implements Cloneable, Serializable {
   public void setContents(String contents) {
     this.contents = contents;
   }
-  public int getHits() {
-    return hits;
+  public Date getCreatedDate() {
+    return createdDate;
   }
-  public void setHits(int hits) {
-    this.hits = hits;
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
   }
-  public Date getWriteDate() {
-    return writeDate;
+  public int getViewCount() {
+    return viewCount;
   }
-  public void setWriteDate(Date writeDate) {
-    this.writeDate = writeDate;
+  public void setViewCount(int viewCount) {
+    this.viewCount = viewCount;
   }
   
-//인스턴스 필드를 사용하지 않으므로 스태틱 메서드로 만든다.
-  public static Board valueOf(String csv) {
-    String[] values = csv.split(",");
-
-    Board board = new Board();
-
-    board.setNum(Integer.parseInt(values[0]));
-    board.setContents(values[1]);
-    board.setHits(Integer.parseInt(values[2]));
-    board.setWriteDate(Date.valueOf(values[3]));
-
-    return board;
-
-  }
- 
-
-
+  
 }

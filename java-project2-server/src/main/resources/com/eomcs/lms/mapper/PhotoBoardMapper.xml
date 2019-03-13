@@ -5,29 +5,25 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.eomcs.lms.dao.PhotoBoardDao">
-
-  
-  
   
   <resultMap type="photoBoard" id="photoBoardMap">
-    <id column="photo_id"       property="num"/>
+    <id column="photo_id"       property="no"/>
     <result column="lesson_id"  property="lessonNo"/>
     <result column="titl"       property="title"/>
-    <result column="cdt"        property="writeDate"/>
-    <result column="vw_cnt"     property="hits"/>
+    <result column="cdt"        property="createdDate"/>
+    <result column="vw_cnt"     property="viewCount"/>
   </resultMap>
   
-  
   <resultMap type="photoBoard" id="photoBoardFileMap">
-    <id column="photo_id"       property="num"/>
+    <id column="photo_id"       property="no"/>
     <result column="lesson_id"  property="lessonNo"/>
     <result column="titl"       property="title"/>
-    <result column="cdt"        property="writeDate"/>
-    <result column="vw_cnt"     property="hits"/>
- 
+    <result column="cdt"        property="createdDate"/>
+    <result column="vw_cnt"     property="viewCount"/>
+    
     <association property="lesson" javaType="lesson">
-      <id column="lesson_id"        property="num"/>
-      <result column="lessonTitle"  property="className"/>
+      <id column="lesson_id"        property="no"/>
+      <result column="lessonTitle"  property="title"/>
       <result column="sdt"          property="startDate"/>
       <result column="edt"          property="endDate"/>
     </association>
@@ -104,7 +100,7 @@
   </update>
   
   <insert id="insert" parameterType="photoBoard"
-          useGeneratedKeys="true" keyColumn="photo_id" keyProperty="num">
+          useGeneratedKeys="true" keyColumn="photo_id" keyProperty="no">
     insert into lms_photo(
       titl,
       lesson_id) 

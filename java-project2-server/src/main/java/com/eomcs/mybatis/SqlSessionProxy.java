@@ -12,10 +12,12 @@ import org.apache.ibatis.session.SqlSession;
 
 // SqlSession 객체의 작업을 대행하는 역할
 // => close() 호출될 때,
-//      트랜잭션이 시작된 상태라면 close()를 무시하고,
-//      트랜잭션이 시작된 상태가 아니라면 close()를 정상적으로 수행한다. 
+//    트랜잭션이 시작된 상태라면 close()를 무시하고,
+//    트랜잭션이 시작된 상태가 아니라면 close()를 정상적으로 수행한다.
+//
 public class SqlSessionProxy implements SqlSession {
-  boolean useTransaction; // 기본이 false
+  
+  boolean useTransaction;
   SqlSession original;
   
   public SqlSessionProxy(SqlSession original) {
@@ -27,6 +29,7 @@ public class SqlSessionProxy implements SqlSession {
     this.useTransaction = useTransaction;
   }
   
+  // 트랜잭션 사용 여부 설정하기
   public void setUseTransaction(boolean use) {
     this.useTransaction = use;
   }
@@ -34,11 +37,11 @@ public class SqlSessionProxy implements SqlSession {
   // 다른 메서드는 원래의 기능 그대로 두고, close()에 대해서만 다음과 같이 변경한다.
   public void close() {
     // 트랜잭션을 시작한 상태라면 트랜잭션을 종료할 때까지 공유되는 SqlSession을 닫아서는 안된다.
-    if (useTransaction)
+    if (useTransaction) 
       return;
     original.close();
   }
-
+  
   public <T> T selectOne(String statement) {
     return original.selectOne(statement);
   }
@@ -84,14 +87,17 @@ public class SqlSessionProxy implements SqlSession {
     return original.selectCursor(statement, parameter, rowBounds);
   }
 
+  @SuppressWarnings("rawtypes")
   public void select(String statement, Object parameter, ResultHandler handler) {
     original.select(statement, parameter, handler);
   }
 
+  @SuppressWarnings("rawtypes")
   public void select(String statement, ResultHandler handler) {
     original.select(statement, handler);
   }
 
+  @SuppressWarnings("rawtypes")
   public void select(String statement, Object parameter, RowBounds rowBounds,
       ResultHandler handler) {
     original.select(statement, parameter, rowBounds, handler);
@@ -142,7 +148,6 @@ public class SqlSessionProxy implements SqlSession {
   }
 
 
-
   public void clearCache() {
     original.clearCache();
   }
@@ -160,5 +165,10 @@ public class SqlSessionProxy implements SqlSession {
   }
   
   
-
 }
+
+
+
+
+
+

@@ -10,6 +10,7 @@ public class PhotoBoardSearchCommand extends AbstractCommand {
   
   public PhotoBoardSearchCommand(PhotoBoardDao photoBoardDao) {
     this.photoBoardDao = photoBoardDao;
+    this.name = "/photoboard/search";
   }
 
   @Override
@@ -38,10 +39,10 @@ public class PhotoBoardSearchCommand extends AbstractCommand {
     for (PhotoBoard board : boards) {
       response.println(
           String.format("%3d, %-20s, %s, %d, %d", 
-            board.getNum(), 
+            board.getNo(), 
             board.getTitle(), 
-            board.getWriteDate(), 
-            board.getHits(),
+            board.getCreatedDate(), 
+            board.getViewCount(),
             board.getLessonNo()));
     }
   }
