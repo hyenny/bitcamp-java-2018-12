@@ -1,36 +1,36 @@
 package com.eomcs.lms.handler;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import com.eomcs.lms.dao.PhotoBoardDao;
 import com.eomcs.lms.dao.PhotoFileDao;
 import com.eomcs.lms.domain.PhotoBoard;
 import com.eomcs.lms.domain.PhotoFile;
+import com.eomcs.mybatis.TransactionManager;
 
 public class PhotoBoardUpdateCommand extends AbstractCommand {
   
-  SqlSessionFactory sqlSessionFactory;
-
-  public PhotoBoardUpdateCommand(SqlSessionFactory sqlSessionFactory) {
-    this.sqlSessionFactory = sqlSessionFactory;
+  PhotoBoardDao photoBoardDao;
+  PhotoFileDao photoFileDao;
+  TransactionManager txManager;
+  
+  public PhotoBoardUpdateCommand(
+      PhotoBoardDao photoBoardDao,
+      PhotoFileDao photoFileDao,
+      TransactionManager txManager) {
+    this.photoBoardDao = photoBoardDao;
+    this.photoFileDao = photoFileDao;
+    this.txManager = txManager;
+    this.name = "/photoboard/update";
   }
-
+  
   @Override
   public void execute(Response response) throws Exception {
-    // SqlSession 객체를 준비한다.
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-
+    txManager.beginTransaction();
     try {
-      // SqlSession으로부터 DAO 구현체를 얻는다.
-      // => getMapper(DAO 인터페이스 타입 정보)
-      PhotoBoardDao photoBoardDao = sqlSession.getMapper(PhotoBoardDao.class);
-      PhotoFileDao photoFileDao = sqlSession.getMapper(PhotoFileDao.class);
-      
       PhotoBoard board = new PhotoBoard();
-      board.setNum(response.requestInt("번호?"));
+      board.setNo(response.requestInt("번호?"));
       
-      PhotoBoard origin = photoBoardDao.findByNo(board.getNum());
+      PhotoBoard origin = photoBoardDao.findByNo(board.getNo());
       if (origin == null) {
         response.println("해당 번호의 사진이 없습니다.");
         return;
@@ -46,7 +46,7 @@ public class PhotoBoardUpdateCommand extends AbstractCommand {
       
       // 변경하려면 사진 게시물의 첨부 파일을 출력한다.
       response.println("사진 파일:");
-      List<PhotoFile> files = photoFileDao.findByPhotoBoardNo(board.getNum());
+      List<PhotoFile> files = photoFileDao.findByPhotoBoardNo(board.getNo());
       for (PhotoFile file : files) {
         response.println("> " + file.getFilePath());
       }
@@ -57,7 +57,7 @@ public class PhotoBoardUpdateCommand extends AbstractCommand {
       input = response.requestString("사진을 변경하시겠습니까?(y/N)");
       if (input.equalsIgnoreCase("y")) {
         // 먼저 기존 첨부 파일을 삭제한다.
-        photoFileDao.deleteByPhotoBoardNo(board.getNum());
+        photoFileDao.deleteByPhotoBoardNo(board.getNo());
         
         // 그리고 새 첨부 파일을 추가한다.
         response.println("최소 한 개의 사진 파일을 등록해야 합니다.");
@@ -76,7 +76,7 @@ public class PhotoBoardUpdateCommand extends AbstractCommand {
           }
           PhotoFile file = new PhotoFile();
           file.setFilePath(filePath);
-          file.setPhotoBoardNo(board.getNum());// 사진 게시물을 입력한 후 자동 생성된 PK 값을 꺼낸다.
+          file.setPhotoBoardNo(board.getNo());// 사진 게시물을 입력한 후 자동 생성된 PK 값을 꺼낸다.
           
           photoFiles.add(file);
         }
@@ -86,14 +86,11 @@ public class PhotoBoardUpdateCommand extends AbstractCommand {
       }
       
       response.println("변경했습니다.");
-      sqlSession.commit();
+      txManager.commit();
       
     } catch (Exception e) {
-      sqlSession.rollback();
+      txManager.rollback();
       response.println("변경 중 오류 발생.");
-      
-    } finally {
-      sqlSession.close();
     }
   }
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+  
+  <!-- 프로퍼티 값 설정하기 : 세터 호출하기
+  -->
+  
+  <bean id="c2" class="ch29.e.Car">
+    <property name="model"><value>모델1</value></property>
+    <property name="tires">
+      <list> <!--  배열 프로퍼티 값을 지정할 때 list 엘리먼트를 사용할 수 있다. -->
+        <bean class="ch29.e.Tire"
+              p:maker="비트타이어" p:width="215" p:ratio="65" p:wheel="15"/>
+        <bean class="ch29.e.Tire"
+              p:maker="비트타이어" p:width="215" p:ratio="65" p:wheel="15"/>
+      </list>
+    </property>              
+  </bean>
+  
+    <bean id="c1" class="ch29.e.Car">
+    <property name="model"><value>모델1</value></property>
+    <property name="tires">
+      <array>
+        <bean class="ch29.e.Tire"
+              p:maker="비트타이어" p:width="215" p:ratio="65" p:wheel="15"/>
+        <bean class="ch29.e.Tire"
+              p:maker="비트타이어" p:width="215" p:ratio="65" p:wheel="15"/>
+      </array>
+    </property>              
+  </bean>
+  
+</beans>
+
+
+
+
+
