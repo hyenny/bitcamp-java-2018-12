@@ -24,6 +24,18 @@ repositories {
 
 dependencies {
 
+    //spring context
+    compile group: 'org.springframework', name: 'spring-context', version: '5.1.5.RELEASE'
+    
+    // spring jdbc
+    compile group: 'org.springframework', name: 'spring-jdbc', version: '5.1.5.RELEASE'
+
+    // mybatis spriing
+    compile group: 'org.mybatis', name: 'mybatis-spring', version: '2.0.0'
+    
+    // db
+    compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.6.0'
+    
      // mybatis
     compile group: 'org.mybatis', name: 'mybatis', version: '3.5.0'
     
