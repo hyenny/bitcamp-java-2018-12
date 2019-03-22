@@ -1,5 +1,3 @@
-// 30단계: HTTP 프로토콜을 통해 
-
 package com.eomcs.lms;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -79,40 +77,21 @@ public class ServerApp {
           PrintWriter out = new PrintWriter(socket.getOutputStream())) {
 
         // 클라이언트의 요청 읽기
-        String requestLine = in.readLine();
-        logger.debug(requestLine);
+        String request = in.readLine();
         
-        while (true) {
-          String str = in.readLine();
-          if (str.length() == 0) // 요청의 끝을 만나면 읽기를 멈춘다.
-            break;
-        }
-        
-        String commandPath = requestLine.split(" ")[1];
-        
-       
         // 클라이언트에게 응답하기
-        // => HTTP 프로토콜에 따라 응답 헤더를 출력한다.
-        
-        RequestMappingHandler requestHandler = handlerMapping.get(commandPath);
+        // => 클라이언트 요청을 처리할 메서드를 꺼낸다.
+        RequestMappingHandler requestHandler = handlerMapping.get(request);
         
         if (requestHandler == null) {
-          out.println("HTTP/1.1 404 Not Found");
-          out.println("Server: bitcamp");
-          out.println("Content-Type: text/html; charset=UTF-8");
-          out.println();
           out.println("실행할 수 없는 명령입니다.");
+          out.println("!end!");
           out.flush();
           return;
         }
         
         try {
           // 클라이언트 요청을 처리할 메서드를 찾았다면 호출한다.
-          out.println("HTTP/1.1 404 Not Found");
-          out.println("Server: bitcamp");
-          out.println("Content-Type: text/html; charset=UTF-8");
-          out.println();
-
           requestHandler.method.invoke(
               requestHandler.bean, // 메서드를 호출할 때 사용할 인스턴스 
               new Response(in, out)); // 메서드 파라미터 값
@@ -122,6 +101,7 @@ public class ServerApp {
           e.printStackTrace();
         }
         
+        out.println("!end!");
         out.flush();
         
       } catch (Exception e) {

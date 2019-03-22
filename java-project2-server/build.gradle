@@ -24,6 +24,15 @@ repositories {
 
 dependencies {
 
+    // log4j 2.x 라이브러리
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.2'
+    
+    // log4j 1.x 라이브러리
+    //compile group: 'log4j', name: 'log4j', version: '1.2.17'
+
+    // AOP 관련 라이브러리
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.2'
+
     //spring context
     compile group: 'org.springframework', name: 'spring-context', version: '5.1.5.RELEASE'
     
@@ -50,4 +59,6 @@ dependencies {
 }
 
 // Define the main class for the application
-mainClassName = 'com.mycompany.proj.App'
+// $ gradle build를 수행한 후
+// $ gradle run을 실행하면 다음에서 설정한 ServerApp 클래스를 실행한다. 
+mainClassName = 'com.eomcs.lms.ServerApp'
