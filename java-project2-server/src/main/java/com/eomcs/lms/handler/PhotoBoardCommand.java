@@ -1,15 +1,9 @@
 package com.eomcs.lms.handler;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.eomcs.lms.context.RequestMapping;
-import com.eomcs.lms.dao.PhotoBoardDao;
-import com.eomcs.lms.dao.PhotoFileDao;
 import com.eomcs.lms.domain.PhotoBoard;
 import com.eomcs.lms.domain.PhotoFile;
 import com.eomcs.lms.service.PhotoBoardService;
@@ -26,12 +20,30 @@ public class PhotoBoardCommand {
   }
 
   @RequestMapping("/photoboard/list")
-  public void list(Response response) {
+  public void list(ServletRequest request, ServletResponse response) {
+    PrintWriter out = response.getWriter();
     List<PhotoBoard> boards = photoBoardService.list(0, null);
+    
+    out.println("<html><head><title>사진 게시물 목록</title></head>");
+    out.println("<body><h1>사진 게시물 목록</h1>");
+    out.println("<p><a href='/photoboard/form'>새글</a></p>");
+    out.println("<table border='1'>");
+    out.println(" <tr> <th>번호</th>"
+        + "<th>제목</th>"
+        + "<th>등록일</th>"
+        + "<th>조회수</th>"
+        + "<th>수업번호</th>"
+        + "</tr>");
     
     for (PhotoBoard board : boards) {
       response.println(
-          String.format("%3d, %-20s, %s, %d, %d", 
+          String.format("<tr> "
+              + "<td>%d</td> "
+              + "<td><a href='/photoboard/detail?no=%1$d'>%s</td> "
+              + "<td>%s</td> "
+              + "<td>%d</td>  "
+              + "<td>%d</td> "
+              + "</tr>", 
             board.getNo(), 
             board.getTitle(), 
             board.getCreatedDate(), 
@@ -41,16 +53,15 @@ public class PhotoBoardCommand {
   }
   
   @RequestMapping("/photoboard/add")
-  public void add(Response response) throws Exception {
+  public void add(ServletRequest request, ServletResponse response) throws Exception {
 
     try {
       PhotoBoard board = new PhotoBoard();
-      board.setTitle(response.requestString("사진 제목?"));
-      board.setLessonNo(response.requestInt("수업?"));
+      board.setTitle(request.getParameter("title"));
+      board.setLessonNo(Integer.parseInt(request.getParameter("lessonNo")));
      
-      
-      response.println("최소 한 개의 사진 파일을 등록해야 합니다.");
-      response.println("파일명 입력 없이 그냥 엔터를 치면 파일 추가를 마칩니다.");
+      PrintWriter out = response.getWriter();
+      out.println("<p>최소 한 개의 사진 파일을 등록해야 합니다.</p>");
       
       ArrayList<PhotoFile> files = new ArrayList<>();
       while (true) {
@@ -84,37 +95,61 @@ public class PhotoBoardCommand {
   }
   
   @RequestMapping("/photoboard/detail")
-  public void detail(Response response) throws Exception {
-    int no = response.requestInt("번호?");
+  public void detail(ServletRequest request, ServletResponse response) throws Exception {
+    int no =  Integer.parseInt(request.getParameter("no"));
     
     // lms_photo 테이블의 데이터와 lms_photo_file 테이블의 데이터를 조인하여 결과를 가져온다. 
     // 그 결과를 PhotoBoard 객체에 저장한다.
     // 특히 lms_photo_file 데이터는 PhotoFile 객체에 저장되고, 
     // 그 목록은 PhotoBoard 객체에 포함되어 리턴된다.
     PhotoBoard board = photoBoardService.get(no);
+    PrintWriter out = response.getWriter();
+    out.println("<html><head><title>사진 게시물 조회</title></head>");
+    out.println("<body><h1>사진 게시물 조회</h1>");
+        
     if (board == null) {
-      response.println("해당 사진을 찾을 수 없습니다.");
+      out.println("<p>해당 번호의 게시물이 없습니다.</p>");
       return;
     }
     
-    response.println(String.format("제목: %s", board.getTitle()));
-    response.println(String.format("작성일: %s", board.getCreatedDate()));
-    response.println(String.format("조회수: %d", board.getViewCount()));
-    response.println(String.format("수업: %s(%s ~ %s)", 
-        board.getLesson().getTitle(),
-        board.getLesson().getStartDate(),
-        board.getLesson().getEndDate()));
+    out.println("<form action='/photoboard/update'>");
+    out.println("<table border='1'>");
+    out.printf("<tr>"
+        + "<th>번호</th>"
+        + "<td><input type='text' name='no' value='%d' readonly></td>"
+        + "</tr>\n", no);
+    out.println(String.format("<tr> <th>제목</th>"
+        + "<td><textarea name='title' row='3' cols='50'>%s</textarea></td>"
+        + "</tr>", board.getTitle()));
+    out.println(String.format("<tr> <th>작성일</th>  <td>%s</td> </tr>", board.getCreatedDate()));
+    out.println(String.format("<tr> <th>조회수</th>  <td>%d</td> </tr>", board.getViewCount()));
+    out.printf("<tr>"
+        + "<th>수업</th>"
+        + "<td><input type='text' name='lessonNo' value='%d' readonly></td>"
+        + "</tr>\n", board.getLessonNo());
     
-    response.println("사진파일:");
+    out.println();
     List<PhotoFile> files = board.getFiles();
     for (PhotoFile file : files) {
-      response.println(String.format("> %s", file.getFilePath()));
+      out.println(String.format("> %s", file.getFilePath()));
     }
+    
+    out.println("</table>");
+    out.println("<p><a href='/photoboard/list'>목록</a>"
+        + " <a href='/board/delete?no=" + board.getNo() + "'>삭제</a>"
+        + "<button type='submit'>변경</button>"
+        + "</p>");
+    out.println("</form>");
+    out.println("</body></html>");
+    
+    
+    response.println("사진파일:");
+    
     
   }
   
   @RequestMapping("/photoboard/update")
-  public void update(Response response) throws Exception {
+  public void update(ServletRequest request, ServletResponse response) throws Exception {
     
     try {
       PhotoBoard board = new PhotoBoard();
@@ -182,7 +217,7 @@ public class PhotoBoardCommand {
   }
 
   @RequestMapping("/photoboard/delete")
-  public void delete(Response response) throws Exception {  
+  public void delete(ServletRequest request, ServletResponse response) throws Exception {  
     try {
       int no = response.requestInt("번호?");
   
@@ -198,7 +233,7 @@ public class PhotoBoardCommand {
   }
   
   @RequestMapping("/photoboard/search")
-  public void search(Response response) {
+  public void search(ServletRequest request, ServletResponse response) {
     int lessonNo = 0;
     
     try {
