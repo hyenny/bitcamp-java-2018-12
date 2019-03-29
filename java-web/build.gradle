@@ -21,6 +21,9 @@ repositories {
 
 dependencies {
 
+		// fileupload
+		compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
+
     //Servlet api
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
     
