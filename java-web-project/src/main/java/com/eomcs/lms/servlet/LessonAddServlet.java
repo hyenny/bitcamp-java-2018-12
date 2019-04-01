@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.eomcs.lms.ServerApp;
+import com.eomcs.lms.InitServlet;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.service.LessonService;
 
@@ -23,7 +23,7 @@ public class LessonAddServlet extends HttpServlet {
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
     
-    out.println("<htm>");
+    out.println("<html>");
     out.println("<head><title>새 수업</title></head>");
     out.println("<body>");
     out.println("<h1>새 수업</h1>");
@@ -39,11 +39,11 @@ public class LessonAddServlet extends HttpServlet {
     out.println("</tr>");
     out.println("<tr>");
     out.println("  <th>시작일</th>");
-    out.println("  <td><input type='text' name='startDate'></td>");
+    out.println("  <td><input type='date' name='startDate'></td>");
     out.println("</tr>");
     out.println("<tr>");
     out.println("  <th>종료일</th>");
-    out.println("  <td><input type='text' name='endDate'></td>");
+    out.println("  <td><input type='date' name='endDate'></td>");
     out.println("</tr>");
     out.println("<tr>");
     out.println("  <th>총 교육시간</th>");
@@ -68,10 +68,9 @@ public class LessonAddServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    request.setCharacterEncoding("UTF-8");
     
     // Spring IoC 컨테이너에서 BoardService 객체를 꺼낸다.
-    LessonService lessonService = ServerApp.iocContainer.getBean(LessonService.class);
+    LessonService lessonService = InitServlet.iocContainer.getBean(LessonService.class);
     
     Lesson lesson = new Lesson();
     lesson.setTitle(request.getParameter("title"));

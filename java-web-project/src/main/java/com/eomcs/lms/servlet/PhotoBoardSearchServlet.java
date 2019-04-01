@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.eomcs.lms.ServerApp;
+import com.eomcs.lms.InitServlet;
 import com.eomcs.lms.domain.PhotoBoard;
 import com.eomcs.lms.service.PhotoBoardService;
 
@@ -20,7 +20,8 @@ public class PhotoBoardSearchServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     
-    PhotoBoardService photoBoardService = ServerApp.iocContainer.getBean(PhotoBoardService.class);
+    PhotoBoardService photoBoardService = 
+        InitServlet.iocContainer.getBean(PhotoBoardService.class);
     
     int lessonNo = 0;
     try {

@@ -3,14 +3,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.eomcs.lms.ServerApp;
-import com.eomcs.lms.context.RequestMapping;
+import com.eomcs.lms.InitServlet;
 import com.eomcs.lms.domain.Member;
 import com.eomcs.lms.service.MemberService;
 
@@ -22,9 +19,10 @@ public class MemberSearchServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     
-    request.setCharacterEncoding("UTF-8");
-    // Spring IoC 컨테이너에서 BoardService 객체를 꺼낸다.
-    MemberService memberService = ServerApp.iocContainer.getBean(MemberService.class);
+    MemberService memberService = InitServlet.iocContainer.getBean(MemberService.class);
+    
+    String keyword  = request.getParameter("keyword");
+    List<Member> members = memberService.list(keyword);
     
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
@@ -32,10 +30,6 @@ public class MemberSearchServlet extends HttpServlet {
         + "<title>회원 검색</title>"
         + "</head>");
     out.println("<body><h1>회원 검색</h1>");
-    
-    String keyword  = request.getParameter("keyword");
-    List<Member> members = memberService.list(keyword);
-
     out.println("<table border='1'>");
     out.println(" <tr> <th>번호</th><th>이름</th><th>이메일</th><th>전화번호</th><th>등록일</th></tr>");
     for (Member member : members) {
@@ -48,14 +42,6 @@ public class MemberSearchServlet extends HttpServlet {
     out.println("</body></html>");
 
   }
-  
- 
-  
-  @RequestMapping("/member/search")
-  public void search(ServletRequest request, ServletResponse response) throws Exception {
-    
-  }
-  
-  
+   
   
 }
