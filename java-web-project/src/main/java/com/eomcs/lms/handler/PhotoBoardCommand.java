@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.springframework.stereotype.Component;
-import com.eomcs.lms.context.RequestMapping;
 import com.eomcs.lms.domain.PhotoBoard;
 import com.eomcs.lms.domain.PhotoFile;
 import com.eomcs.lms.service.PhotoBoardService;
@@ -20,7 +19,6 @@ public class PhotoBoardCommand {
     this.photoBoardService = photoBoardService;
   }
 
-  @RequestMapping("/photoboard/list")
   public void list(ServletRequest request, ServletResponse response) throws IOException {
     List<PhotoBoard> boards = photoBoardService.list(0, null);
     
@@ -52,7 +50,6 @@ public class PhotoBoardCommand {
     out.println("</body></html>");
   }
   
-  @RequestMapping("/photoboard/add")
   public void add(ServletRequest request, ServletResponse response) throws IOException {
     PhotoBoard board = new PhotoBoard();
     board.setTitle(request.getParameter("title"));
@@ -87,7 +84,6 @@ public class PhotoBoardCommand {
     out.println("</body></html>");
   }
   
-  @RequestMapping("/photoboard/detail")
   public void detail(ServletRequest request, ServletResponse response) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
     
@@ -159,7 +155,6 @@ public class PhotoBoardCommand {
     out.println("</body></html>");
   }
   
-  @RequestMapping("/photoboard/update")
   public void update(ServletRequest request, ServletResponse response) throws Exception {
     PhotoBoard board = new PhotoBoard();
     board.setNo(Integer.parseInt(request.getParameter("no")));
@@ -196,7 +191,7 @@ public class PhotoBoardCommand {
     out.println("</body></html>");
   }
 
-  @RequestMapping("/photoboard/delete")
+
   public void delete(ServletRequest request, ServletResponse response) throws Exception {
     PrintWriter out = response.getWriter();
     out.println("<html><head>"
@@ -219,7 +214,7 @@ public class PhotoBoardCommand {
     out.println("</body></html>");
   }
   
-  @RequestMapping("/photoboard/search")
+
   public void search(ServletRequest request, ServletResponse response) throws IOException {
     int lessonNo = 0;
     try {
@@ -259,7 +254,7 @@ public class PhotoBoardCommand {
     out.println("</html>");
   }
   
-  @RequestMapping("/photoboard/form")
+
   public void form(ServletRequest request, ServletResponse response) throws Exception {
     PrintWriter out = response.getWriter();
     

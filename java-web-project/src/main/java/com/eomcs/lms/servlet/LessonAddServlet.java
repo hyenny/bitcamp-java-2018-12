@@ -3,27 +3,28 @@ package com.eomcs.lms.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.eomcs.lms.InitServlet;
+import org.springframework.context.ApplicationContext;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.service.LessonService;
 
 @SuppressWarnings("serial")
 @WebServlet("/lesson/add")
 public class LessonAddServlet extends HttpServlet {
-  
+
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    
+
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
-    
-    out.println("<html>");
+
+    out.println("<htm>");
     out.println("<head><title>새 수업</title></head>");
     out.println("<body>");
     out.println("<h1>새 수업</h1>");
@@ -62,16 +63,17 @@ public class LessonAddServlet extends HttpServlet {
     out.println("</form>");
     out.println("</body>");
     out.println("</html>");
-
   }
-  
+
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    
-    // Spring IoC 컨테이너에서 BoardService 객체를 꺼낸다.
-    LessonService lessonService = InitServlet.iocContainer.getBean(LessonService.class);
-    
+
+    ServletContext sc = this.getServletContext();
+    ApplicationContext ionContainer = (ApplicationContext) sc.getAttribute("iocContainer");
+    // Spring IoC 컨테이너에서 LessonService 객체를 꺼낸다.
+    LessonService lessonService = ionContainer.getBean(LessonService.class);
+
     Lesson lesson = new Lesson();
     lesson.setTitle(request.getParameter("title"));
     lesson.setContents(request.getParameter("contents"));
@@ -79,19 +81,12 @@ public class LessonAddServlet extends HttpServlet {
     lesson.setEndDate(Date.valueOf(request.getParameter("endDate")));
     lesson.setTotalHours(Integer.parseInt(request.getParameter("totalHours")));
     lesson.setDayHours(Integer.parseInt(request.getParameter("dayHours")));
-    
-    lessonService.add(lesson);
-    
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
-    out.println("<html><head>"
-        + "<title>수업 등록</title>"
-        + "<meta http-equiv='Refresh' content='1;url=list'>"
-        + "</head>");
-    out.println("<body><h1>수업 등록</h1>");
-    out.println("<p>저장하였습니다.</p>");
-    out.println("</body></html>");
 
-    
+    lessonService.add(lesson);
+
+    response.sendRedirect("list");
   }
+
+
+
 }

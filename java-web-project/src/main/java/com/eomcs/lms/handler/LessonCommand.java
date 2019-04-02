@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.springframework.stereotype.Component;
-import com.eomcs.lms.context.RequestMapping;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.service.LessonService;
 
@@ -19,7 +18,6 @@ public class LessonCommand {
     this.lessonService = lessonService;
   }
   
-  @RequestMapping("/lesson/list")
   public void list(ServletRequest request, ServletResponse response) throws Exception {
     List<Lesson> lessons = lessonService.list();
     
@@ -44,7 +42,6 @@ public class LessonCommand {
     out.println("</body></html>");
   }
   
-  @RequestMapping("/lesson/add")
   public void add(ServletRequest request, ServletResponse response) throws Exception {
     Lesson lesson = new Lesson();
     lesson.setTitle(request.getParameter("title"));
@@ -66,7 +63,6 @@ public class LessonCommand {
     out.println("</body></html>");
   }
   
-  @RequestMapping("/lesson/detail")
   public void detail(ServletRequest request, ServletResponse response) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
 
@@ -128,7 +124,6 @@ public class LessonCommand {
     out.println("</html>");
   }
   
-  @RequestMapping("/lesson/update")
   public void update(ServletRequest request, ServletResponse response) throws Exception {
     Lesson lesson = new Lesson();
     lesson.setNo(Integer.parseInt(request.getParameter("no")));
@@ -155,7 +150,7 @@ public class LessonCommand {
     out.println("</body></html>");
   }
   
-  @RequestMapping("/lesson/delete")
+
   public void delete(ServletRequest request, ServletResponse response) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
 
@@ -175,7 +170,7 @@ public class LessonCommand {
     out.println("</body></html>");
   }
   
-  @RequestMapping("/lesson/form")
+
   public void form(ServletRequest request, ServletResponse response) throws Exception {
     PrintWriter out = response.getWriter();
     

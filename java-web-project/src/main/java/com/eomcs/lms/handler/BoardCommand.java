@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.springframework.stereotype.Component;
-import com.eomcs.lms.context.RequestMapping;
 import com.eomcs.lms.domain.Board;
 import com.eomcs.lms.service.BoardService;
 
@@ -18,7 +17,6 @@ public class BoardCommand {
     this.boardService = boardService;
   }
 
-  @RequestMapping("/board/list")
   public void list(ServletRequest request, ServletResponse response) throws IOException {
     
     
@@ -40,7 +38,6 @@ public class BoardCommand {
     out.println("</table></body></html>");
   }
   
-  @RequestMapping("/board/add")
   public void add(ServletRequest request, ServletResponse response) throws Exception {
     Board board = new Board();
     board.setContents(request.getParameter("contents"));
@@ -57,7 +54,6 @@ public class BoardCommand {
  
   }
   
-  @RequestMapping("/board/detail")
   public void detail(ServletRequest request, ServletResponse response) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
     
@@ -93,7 +89,6 @@ public class BoardCommand {
     out.println("</body></html>");
   }
   
-  @RequestMapping("/board/update")
   public void update(ServletRequest request, ServletResponse response) throws Exception {
     Board board = new Board();
     board.setNo(Integer.parseInt(request.getParameter("no")));
@@ -115,7 +110,6 @@ public class BoardCommand {
       out.println("</body></html>");
   }
   
-  @RequestMapping("/board/delete")
   public void delete(ServletRequest request, ServletResponse response) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
     
@@ -135,7 +129,6 @@ public class BoardCommand {
     out.println("</body></html>");
   }
   
-  @RequestMapping("/board/form")
   public void form(ServletRequest request, ServletResponse response) throws Exception {
     PrintWriter out = response.getWriter();
     

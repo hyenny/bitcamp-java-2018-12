@@ -3,12 +3,13 @@ package com.eomcs.lms.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.eomcs.lms.InitServlet;
+import org.springframework.context.ApplicationContext;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.domain.PhotoBoard;
 import com.eomcs.lms.domain.PhotoFile;
@@ -23,10 +24,12 @@ public class PhotoBoardDetailServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    PhotoBoardService photoBoardService = 
-        InitServlet.iocContainer.getBean(PhotoBoardService.class);
+    ServletContext sc = this.getServletContext();
+    ApplicationContext ionContainer = (ApplicationContext) sc.getAttribute("iocContainer");
+    // Spring IoC 컨테이너에서 PhotoBoardService 객체를 꺼낸다.
+    PhotoBoardService photoBoardService = ionContainer.getBean(PhotoBoardService.class);
     LessonService lessonService = 
-        InitServlet.iocContainer.getBean(LessonService.class);
+        ionContainer.getBean(LessonService.class);
     
     response.setContentType("text/html;charset=UTF-8");
 

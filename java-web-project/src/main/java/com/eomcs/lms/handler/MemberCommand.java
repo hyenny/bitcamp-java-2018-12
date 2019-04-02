@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.springframework.stereotype.Component;
-import com.eomcs.lms.context.RequestMapping;
 import com.eomcs.lms.domain.Member;
 import com.eomcs.lms.service.MemberService;
 
@@ -19,7 +18,6 @@ public class MemberCommand {
     this.memberService = memberService;
   }
   
-  @RequestMapping("/member/list")
   public void list(ServletRequest request, ServletResponse response) throws IOException {
     PrintWriter out = response.getWriter();
     List<Member> members = memberService.list(null);
@@ -42,7 +40,6 @@ public class MemberCommand {
     }
   }
   
-  @RequestMapping("/member/add")
   public void add(ServletRequest request, ServletResponse response) throws Exception {
     Member member = new Member();
     member.setName(request.getParameter("name"));
@@ -62,7 +59,6 @@ public class MemberCommand {
     out.println("</body></html>");
   }
   
-  @RequestMapping("/member/detail")
   public void detail(ServletRequest request, ServletResponse response) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
 
@@ -111,7 +107,6 @@ public class MemberCommand {
 
   }
   
-  @RequestMapping("/member/update")
   public void update(ServletRequest request, ServletResponse response) throws Exception {
     Member member = new Member();
     member.setNo(Integer.parseInt(request.getParameter("no")));
@@ -139,7 +134,6 @@ public class MemberCommand {
     
   }
   
-  @RequestMapping("/member/delete")
   public void delete(ServletRequest request, ServletResponse response) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
     
@@ -160,7 +154,7 @@ public class MemberCommand {
     
   }
   
-  @RequestMapping("/member/search")
+
   public void search(ServletRequest request, ServletResponse response) throws Exception {  
     PrintWriter out = response.getWriter();
     out.println("<html><head>"
@@ -183,7 +177,7 @@ public class MemberCommand {
     out.println("</body></html>");
   }
   
-  @RequestMapping("/member/form")
+
   public void form(ServletRequest request, ServletResponse response) throws Exception {
     PrintWriter out = response.getWriter();
     

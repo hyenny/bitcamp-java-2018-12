@@ -8,8 +8,13 @@
   <description>
     수업 관리 웹 애플리케이션
   </description>
-
+ 
   <display-name>java-web-project</display-name>
+  
+  <!--  리스너 선언 -->
+  <listener>
+    <listener-class>com.eomcs.lms.listener.ContextLoaderListener</listener-class>
+  </listener>
   
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
