@@ -1,7 +1,7 @@
 package com.eomcs.lms.servlet;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,30 +21,32 @@ public class BoardListServlet extends HttpServlet {
       HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     
-    ServletContext sc = this.getServletContext();
-    ApplicationContext ionContainer = (ApplicationContext) sc.getAttribute("iocContainer");
     // Spring IoC 컨테이너에서 BoardService 객체를 꺼낸다.
-    BoardService boardService = ionContainer.getBean(BoardService.class);
+    ServletContext sc = this.getServletContext();
+    ApplicationContext iocContainer = 
+        (ApplicationContext) sc.getAttribute("iocContainer");
+    BoardService boardService = 
+        iocContainer.getBean(BoardService.class);
     
     List<Board> boards = boardService.list();
     
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
+    // JSP가 게시물 목록을 다룰 수 있도록 ServletRequest 보관소에 저장한다.
+    request.setAttribute("list", boards);
     
-    out.println("<html><head><title>게시물 목록</title></head>");
-    out.println("<body><h1>게시물 목록</h1>");
-    out.println("<p><a href='add'>새 글</a></p>");
-    out.println("<table border='1'>");
-    out.println("<tr> <th>번호</th> <th>제목</th> <th>등록일</th> <th>조회수</th> </tr>");
-    for (Board board : boards) {
-      out.println(String.format(
-          "<tr><td>%d</td> <td><a href='detail?no=%1$d'>%s</a></td> <td>%s</td> <td>%d</td></tr>", 
-            board.getNo(), 
-            board.getContents(), 
-            board.getCreatedDate(), 
-            board.getViewCount()));
-    }
-    out.println("</table></body></html>");
+    response.setContentType("text/html;charset=UTF-8");
+    
+    // JSP의 실행을 포함시킨다.
+    RequestDispatcher rd = request.getRequestDispatcher("/board/list.jsp");
+    rd.include(request, response);
   }
-
 }
+
+
+
+
+
+
+
+
+
+

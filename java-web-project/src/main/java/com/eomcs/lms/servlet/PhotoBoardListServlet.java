@@ -1,6 +1,5 @@
 package com.eomcs.lms.servlet;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -24,33 +23,13 @@ public class PhotoBoardListServlet extends HttpServlet {
     ApplicationContext ionContainer = (ApplicationContext) sc.getAttribute("iocContainer");
     // Spring IoC 컨테이너에서 PhotoBoardService 객체를 꺼낸다.
     PhotoBoardService photoBoardService = ionContainer.getBean(PhotoBoardService.class);
-    response.setContentType("text/html;charset=UTF-8");
     
-    PrintWriter out = response.getWriter();
     List<PhotoBoard> photoBoards = photoBoardService.list(0, null);
+    
+    request.setAttribute("list", photoBoards);
+    response.setContentType("text/html;charset=UTF-8");
+    request.getRequestDispatcher("/photoboard/list.jsp").include(request, response);
 
-    out.println("<html><head><title>사진 목록</title></head>");
-    out.println("<body><h1>사진 목록</h1>");
-    out.println("<p><a href='add'>사진 추가</a></p>");
-    out.println("<table border='1'>");
-    out.println("<tr> <th>번호</th> <th>제목</th> <th>등록일</th> <th>조회수</th> "
-        + "<th>수업 번호</th> </tr>");
-    for (PhotoBoard photoBoard : photoBoards) {
-      out.println(String.format("<tr><td>%d</td> "
-          + "<td><a href='detail?no=%1$d'>%s</a></td> "
-          + "<td>%s</td> "
-          + "<td>%d</td> "
-          + "<td>%d</td> ",
-          photoBoard.getNo(), photoBoard.getTitle(), 
-          photoBoard.getCreatedDate(), photoBoard.getViewCount(),
-          photoBoard.getLessonNo()));
-    }
-    out.println("</table><form action='search'>");
-    out.println("수업번호: <input type='number' name='lessonNo'>");
-    out.println("검색어: <input type='text' name='searchWord'>");
-    out.println("<button type='submit'>검색</button>");
-    out.println("</form>");
-    out.println("<a href='../index.html'>처음화면</a>");
-    out.println("</body></html>");
+
   }
 }

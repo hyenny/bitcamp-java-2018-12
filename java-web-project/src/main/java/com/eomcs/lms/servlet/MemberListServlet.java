@@ -1,6 +1,5 @@
 package com.eomcs.lms.servlet;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -21,39 +20,20 @@ public class MemberListServlet extends HttpServlet {
       throws ServletException, IOException {
 
     ServletContext sc = this.getServletContext();
-    ApplicationContext ionContainer = (ApplicationContext) sc.getAttribute("iocContainer");
-    // Spring IoC 컨테이너에서 MemberService 객체를 꺼낸다.
-    MemberService memberService = ionContainer.getBean(MemberService.class);
-    
+    ApplicationContext iocContainer = 
+        (ApplicationContext) sc.getAttribute("iocContainer");
+    MemberService memberService = iocContainer.getBean(MemberService.class);
+
     List<Member> members = memberService.list(null);
-
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
     
-    out.println("<html><head><title>회원 목록</title></head>");
-    out.println("<body><h1>회원 목록</h1>");
-    out.println("<p><a href='add'>새 회원</a></p>");
-    out.println("<table border='1'>");
-    out.println("<tr><th>번호</th><th>이름</th><th>이메일</th><th>전화</th><th>가입일</th></tr>");
+    // JSP가 게시물 목록을 다룰 수 있도록 ServletRequest 보관소에 저장한다.
+    request.setAttribute("list", members);
 
-    for (Member member : members) {
-      out.println(String.format(
-          "<tr><td>%d</td><td><a href='detail?no=%1$d'>%s</a></td>"
-              + "<td>%s</td><td>%s</td><td>%s</td></tr>", 
-              member.getNo(), 
-              member.getName(), 
-              member.getEmail(), 
-              member.getTel(), 
-              member.getRegisteredDate()));
-    }
-    out.println("</table>");
+    
+    response.setContentType("text/html;charset=UTF-8");
 
-    out.println("<form action='search'>");
-    out.println("<input type='text' name='keyword'> ");
-    out.println("<button type='submit'>검색</button>");
-    out.println("</form>");
+    request.getRequestDispatcher("/member/list.jsp").include(request, response);
 
-    out.println("</body></html>");
   }
 
 }

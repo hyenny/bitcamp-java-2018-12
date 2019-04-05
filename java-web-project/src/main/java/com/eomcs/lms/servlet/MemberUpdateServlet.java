@@ -1,6 +1,5 @@
 package com.eomcs.lms.servlet;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.UUID;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -24,9 +23,9 @@ public class MemberUpdateServlet extends HttpServlet {
       throws ServletException, IOException {
 
     ServletContext sc = this.getServletContext();
-    ApplicationContext ionContainer = (ApplicationContext) sc.getAttribute("iocContainer");
-    // Spring IoC 컨테이너에서 MemberService 객체를 꺼낸다.
-    MemberService memberService = ionContainer.getBean(MemberService.class);
+    ApplicationContext iocContainer = 
+        (ApplicationContext) sc.getAttribute("iocContainer");
+    MemberService memberService = iocContainer.getBean(MemberService.class);
 
     Member member = new Member();
     member.setNo(Integer.parseInt(request.getParameter("no")));
@@ -48,18 +47,15 @@ public class MemberUpdateServlet extends HttpServlet {
       response.sendRedirect("list");
       return;
     }
-    
-    response.setHeader("Refresh", "2;url=list");
-    
+      
     response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
     
-    out.println("<html><head>"
-        + "<title>회원 변경</title>"
-        + "</head>");
-    out.println("<body><h1>회원 변경</h1>");
-    out.println("<p>해당 번호의 회원이 없습니다.</p>");
-    out.println("</body></html>");
+    // 오류 내용을 출력하는 JSP로 포워딩한다.
+    request.setAttribute("error.title", "수업 변경");
+    request.setAttribute("error.content", "해당 수업의 게시물이 없습니다.");
+    
+    request.getRequestDispatcher("/error.jsp").forward(request, response);
+    
   }
 
 

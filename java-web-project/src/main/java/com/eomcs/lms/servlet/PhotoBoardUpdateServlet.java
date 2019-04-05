@@ -1,7 +1,6 @@
 package com.eomcs.lms.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
@@ -36,11 +35,9 @@ public class PhotoBoardUpdateServlet extends HttpServlet {
       throws ServletException, IOException {
     
     ServletContext sc = this.getServletContext();
-    ApplicationContext ionContainer = (ApplicationContext) sc.getAttribute("iocContainer");
-    // Spring IoC 컨테이너에서 PhotoBoardService 객체를 꺼낸다.
-    PhotoBoardService photoBoardService = ionContainer.getBean(PhotoBoardService.class);
-
-    response.setContentType("text/html;charset=UTF-8");
+    ApplicationContext iocContainer = 
+        (ApplicationContext) sc.getAttribute("iocContainer");
+    PhotoBoardService photoBoardService = iocContainer.getBean(PhotoBoardService.class);
 
     PhotoBoard board = new PhotoBoard();
     board.setNo(Integer.parseInt(request.getParameter("no")));
@@ -65,17 +62,26 @@ public class PhotoBoardUpdateServlet extends HttpServlet {
     board.setFiles(files);
 
     if (files.size() > 0) {
+      System.out.println(board.getTitle());
+      System.out.println(board.getLessonNo());
+      System.out.println(board.getFiles());
       photoBoardService.update(board);
       response.sendRedirect("list");
       return;
     }
     
-    PrintWriter out = response.getWriter();
-    out.println("<html><head>" + "<title>사진 변경</title>"
-        + "<meta http-equiv='Refresh' content='1;url=list'>" + "</head>");
-    out.println("<body><h1>사진 변경</h1>");
-    out.println("<p>최소 한 개의 사진 파일을 등록해야 합니다.</p>");
-    out.println("</body></html>");
+    
+    
+    System.out.println("바깥 :" + board.getTitle());
+    response.setContentType("text/html;charset=UTF-8");
+    
+    // 오류 내용을 출력하는 JSP로 포워딩한다.
+    request.setAttribute("error.title", "포토보드 변경");
+    request.setAttribute("error.content", "포토보드 에러");
+    
+    request.getRequestDispatcher("/error.jsp").forward(request, response);
+    
+
   }
 
 }

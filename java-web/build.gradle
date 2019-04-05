@@ -21,6 +21,9 @@ repositories {
 
 dependencies {
 
+		// https://mvnrepository.com/artifact/net.coobird/thumbnailator
+		compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
+
 		// fileupload
 		compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
 
