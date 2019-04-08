@@ -33,27 +33,28 @@ public class PhotoBoardUpdateServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    
+
+    // Spring IoC 컨테이너에서 BoardService 객체를 꺼낸다.
     ServletContext sc = this.getServletContext();
     ApplicationContext iocContainer = 
         (ApplicationContext) sc.getAttribute("iocContainer");
-    PhotoBoardService photoBoardService = iocContainer.getBean(PhotoBoardService.class);
-
+    PhotoBoardService photoBoardService = 
+        iocContainer.getBean(PhotoBoardService.class);
     PhotoBoard board = new PhotoBoard();
     board.setNo(Integer.parseInt(request.getParameter("no")));
     board.setTitle(request.getParameter("title"));
     board.setLessonNo(Integer.parseInt(request.getParameter("lessonNo")));
 
     ArrayList<PhotoFile> files = new ArrayList<>();
-    Collection<Part> photos = request.getParts(); 
-    
+    Collection<Part> photos = request.getParts();
+
     for (Part photo : photos) {
-      if (photo.getSize() == 0 || !photo.getName().equals("photo")) 
+      if (photo.getSize() == 0 || !photo.getName().equals("photo"))
         continue;
-      
+
       String filename = UUID.randomUUID().toString();
       photo.write(uploadDir + "/" + filename);
-      
+
       PhotoFile file = new PhotoFile();
       file.setFilePath(filename);
       file.setPhotoBoardNo(board.getNo());
@@ -62,25 +63,16 @@ public class PhotoBoardUpdateServlet extends HttpServlet {
     board.setFiles(files);
 
     if (files.size() > 0) {
-      System.out.println(board.getTitle());
-      System.out.println(board.getLessonNo());
-      System.out.println(board.getFiles());
       photoBoardService.update(board);
       response.sendRedirect("list");
       return;
     }
-    
-    
-    
-    System.out.println("바깥 :" + board.getTitle());
-    response.setContentType("text/html;charset=UTF-8");
-    
+
     // 오류 내용을 출력하는 JSP로 포워딩한다.
-    request.setAttribute("error.title", "포토보드 변경");
-    request.setAttribute("error.content", "포토보드 에러");
-    
+    request.setAttribute("error.Title", "사진 변경");
+    request.setAttribute("error.content", "최소 한 개의 사진 파일을 등록해야 합니다.");
+
     request.getRequestDispatcher("/error.jsp").forward(request, response);
-    
 
   }
 

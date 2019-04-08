@@ -21,29 +21,27 @@ public class PhotoBoardDetailServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
+    // Spring IoC 컨테이너에서 BoardService 객체를 꺼낸다.
     ServletContext sc = this.getServletContext();
-    ApplicationContext ionContainer = (ApplicationContext) sc.getAttribute("iocContainer");
-    // Spring IoC 컨테이너에서 PhotoBoardService 객체를 꺼낸다.
-    PhotoBoardService photoBoardService = ionContainer.getBean(PhotoBoardService.class);
+    ApplicationContext iocContainer = 
+        (ApplicationContext) sc.getAttribute("iocContainer");
+    PhotoBoardService photoBoardService = 
+        iocContainer.getBean(PhotoBoardService.class);
     LessonService lessonService = 
-        ionContainer.getBean(LessonService.class);
-    
-    response.setContentType("text/html;charset=UTF-8");
-
+        iocContainer.getBean(LessonService.class);
     int no = Integer.parseInt(request.getParameter("no"));
+
+    
 
     PhotoBoard board = photoBoardService.get(no);
     List<Lesson> lessons = lessonService.list();
-    
-    request.setAttribute("photoBoard", board);
-    request.setAttribute("list", lessons);
+    request.setAttribute("board", board);
+    request.setAttribute("lessons", lessons);
     
     response.setContentType("text/html;charset=UTF-8");
+    
+    // JSP의 실행을 포함시킨다.
     request.getRequestDispatcher("/photoboard/detail.jsp").include(request, response);
-
-     
-      
   }
 
 }

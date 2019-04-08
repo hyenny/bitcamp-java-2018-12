@@ -21,6 +21,9 @@ repositories {
 
 dependencies {
 
+		// JSTL 명세를 구현한 라이브러리
+		compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+
 		// https://mvnrepository.com/artifact/net.coobird/thumbnailator
 		compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
 

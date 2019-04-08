@@ -5,9 +5,7 @@
 	contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
 	trimDirectiveWhitespaces="true"%>
-<%
-List<Board> list = (List<Board>)request.getAttribute("list");
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +16,7 @@ List<Board> list = (List<Board>)request.getAttribute("list");
 request.getRequestDispatcher("/header").include(request, response);
 %>
 
-	<h1>게시물 목록</h1>
+	<h1>게시물 목록(JSP2)</h1>
 
 	<p><a href='add'>새 글</a></p>
 	<table border='1'>
@@ -28,6 +26,8 @@ request.getRequestDispatcher("/header").include(request, response);
 			<th>등록일</th> 
 			<th>조회수</th>
 		</tr>
+    <jsp:useBean id="list" scope="request" type="java.util.List<Board>"></jsp:useBean>
+    
 		<%for (Board board : list) {%>
 		<tr>
 			<td><%=board.getNo() %></td> 

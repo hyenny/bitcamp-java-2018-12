@@ -5,9 +5,7 @@
 	contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
 	trimDirectiveWhitespaces="true"%>
-<%
-List<Lesson> list = (List<Lesson>)request.getAttribute("list");
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +15,7 @@ List<Lesson> list = (List<Lesson>)request.getAttribute("list");
 
 <jsp:include page="/header.jsp"/>
 
-	<h1>수업 목록(JSP)</h1>
+	<h1>수업 목록(JSP2)</h1>
 
 	<p><a href='add'>새 수업</a></p>
 	<table border='1'>
@@ -27,6 +25,8 @@ List<Lesson> list = (List<Lesson>)request.getAttribute("list");
 			<th>기간</th> 
 			<th>총교육시간</th>
 		</tr>
+     <jsp:useBean id="list" scope="request" type="java.util.List<Lesson>"></jsp:useBean>
+     
 		<%for (Lesson lesson : list) {%>
 		<tr>
 			<td><%=lesson.getNo() %></td> 
