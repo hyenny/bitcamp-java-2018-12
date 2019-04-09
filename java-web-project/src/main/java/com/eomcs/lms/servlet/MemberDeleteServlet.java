@@ -12,31 +12,28 @@ import com.eomcs.lms.service.MemberService;
 @SuppressWarnings("serial")
 @WebServlet("/member/delete")
 public class MemberDeleteServlet extends HttpServlet {
-  
+
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
 
     ServletContext sc = this.getServletContext();
     ApplicationContext iocContainer = 
         (ApplicationContext) sc.getAttribute("iocContainer");
     MemberService memberService = iocContainer.getBean(MemberService.class);
-    
+
     int no = Integer.parseInt(request.getParameter("no"));
 
     if (memberService.delete(no) > 0) {
-      response.sendRedirect("list");
-      return;
+      request.setAttribute("viewUrl", "redirect:list");
+    } else {
+      // 오류 내용을 출력하는 JSP로 포워딩한다.
+      request.setAttribute("error.title", "수업 삭제");
+      request.setAttribute("error.content", "해당 수업의 게시물이 없습니다.");
+
     }
-    
-    response.setContentType("text/html;charset=UTF-8");
-    
-    // 오류 내용을 출력하는 JSP로 포워딩한다.
-    request.setAttribute("error.title", "수업 삭제");
-    request.setAttribute("error.content", "해당 수업의 게시물이 없습니다.");
-    
-    request.getRequestDispatcher("/error.jsp").forward(request, response);
+
   }
-  
-  
+
+
 }

@@ -22,9 +22,7 @@ public class MemberAddServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    response.setContentType("text/html;charset=UTF-8");
-    // 헤더를 출력한다.
-    request.getRequestDispatcher("/member/form.jsp").include(request, response);
+    request.setAttribute("viewUrl", "/member/form.jsp");
    
   }
   
@@ -55,7 +53,7 @@ public class MemberAddServlet extends HttpServlet {
 
     memberService.add(member);
     
-    response.sendRedirect("list");
+    request.setAttribute("viewUrl", "redirect:list");
   }
   
 

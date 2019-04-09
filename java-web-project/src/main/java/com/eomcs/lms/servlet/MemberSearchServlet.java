@@ -29,9 +29,8 @@ public class MemberSearchServlet extends HttpServlet {
 
     
     request.setAttribute("list", members);
-    response.setContentType("text/html;charset=UTF-8");
-    // 헤더를 출력한다.
-    request.getRequestDispatcher("/member/list.jsp").include(request, response);
+    
+    request.setAttribute("viewUrl", "/member/list.jsp");
     
     
   }

@@ -28,10 +28,7 @@ public class PhotoBoardListServlet extends HttpServlet {
     List<PhotoBoard> boards = photoBoardService.list(0, null);
 
     request.setAttribute("list", boards);
-    
-    response.setContentType("text/html;charset=UTF-8");
-    
-    // JSP의 실행을 포함시킨다.
-    request.getRequestDispatcher("/photoboard/list.jsp").include(request, response);
+    request.setAttribute("viewUrl", "/photoboard/list.jsp");
+
   }
 }

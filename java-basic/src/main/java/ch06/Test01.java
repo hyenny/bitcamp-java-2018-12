@@ -1,3 +1,5 @@
+package ch06;
+
 public class Test01 {
   public static void main(String[] args) {
     // 메서드 사용

@@ -1,7 +1,7 @@
 package ch12.c.other;
 
 public class Test01 {
-  public static void main(Stirng[] args) {
+  public static void main(String[] args) {
    
     My obj1 = new My();
     

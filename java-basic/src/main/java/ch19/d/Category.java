@@ -11,7 +11,7 @@ public class Category {
     public static final int vga = 106;
   }
   
-  finalstatic class appliance {
+  final static class appliance {
     public static final int APPLIANCE_TV = 201;
     public static final int APPLIANCE_AUDIO = 202;
     public static final int APPLIANCE_DVD = 203;

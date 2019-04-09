@@ -44,17 +44,12 @@ public class MemberUpdateServlet extends HttpServlet {
     }
 
     if (memberService.update(member) > 0) {
-      response.sendRedirect("list");
-      return;
+      request.setAttribute("viewUrl", "redirect:list");
+    } else {
+      // 오류 내용을 출력하는 JSP로 포워딩한다.
+      request.setAttribute("error.title", "수업 변경");
+      request.setAttribute("error.content", "해당 수업의 게시물이 없습니다.");
     }
-      
-    response.setContentType("text/html;charset=UTF-8");
-    
-    // 오류 내용을 출력하는 JSP로 포워딩한다.
-    request.setAttribute("error.title", "수업 변경");
-    request.setAttribute("error.content", "해당 수업의 게시물이 없습니다.");
-    
-    request.getRequestDispatcher("/error.jsp").forward(request, response);
     
   }
 

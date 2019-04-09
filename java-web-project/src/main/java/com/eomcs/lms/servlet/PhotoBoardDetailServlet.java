@@ -33,15 +33,13 @@ public class PhotoBoardDetailServlet extends HttpServlet {
 
     
 
-    PhotoBoard board = photoBoardService.get(no);
+    PhotoBoard photoBoard = photoBoardService.get(no);
     List<Lesson> lessons = lessonService.list();
-    request.setAttribute("board", board);
+    request.setAttribute("photoBoard", photoBoard);
     request.setAttribute("lessons", lessons);
+    request.setAttribute("files", photoBoard.getFiles());
     
-    response.setContentType("text/html;charset=UTF-8");
-    
-    // JSP의 실행을 포함시킨다.
-    request.getRequestDispatcher("/photoboard/detail.jsp").include(request, response);
+    request.setAttribute("viewUrl", "/photoboard/detail.jsp");
   }
 
 }

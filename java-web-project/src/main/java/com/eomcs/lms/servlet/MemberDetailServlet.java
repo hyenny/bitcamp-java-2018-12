@@ -29,11 +29,8 @@ public class MemberDetailServlet extends HttpServlet {
     
     // JSP가 사용할 수 있도록 ServletRequest 보관소에 저장해둔다.
     request.setAttribute("member", member);
-
-    response.setContentType("text/html;charset=UTF-8");
     
-    // 헤더를 출력한다.
-    request.getRequestDispatcher("/member/detail.jsp").include(request, response);
+    request.setAttribute("viewUrl", "/member/detail.jsp");
     
 
   }

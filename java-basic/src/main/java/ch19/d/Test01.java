@@ -1,7 +1,5 @@
 package ch19.d;
 
-
-
 public class Test01 {
   
   public static void main(String[] args) {

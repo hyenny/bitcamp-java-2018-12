@@ -1,6 +1,6 @@
 package com.eomcs.lms.servlet;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,52 +24,11 @@ public class LoginServlet extends HttpServlet {
       HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     
-    // 도대체 어느 페이지에서 이리로 보냈나?
-    // => 요청 헤더 Referer의 값을 세션에 보관한다.
-    //    로그인을 처리할 때 해당 페이지로 리다이렉트 할 것이다.
-    // => 웹 브라우저의 주소 창에 직접 URL을 지정한 경우에는 
-    //    요청 헤더에 Referer가 없다. 
-    // 
     HttpSession session = request.getSession();
     session.setAttribute(REFERER_URL, request.getHeader("Referer"));
     
-    // 이메일 쿠키 값을 꺼내온다.
-    Cookie[] cookies = request.getCookies();
-    String email = "";
-    if (cookies != null) {
-      for (Cookie c : cookies) {
-        if (c.getName().equals("email")) {
-          email = c.getValue();
-          break;
-        }
-      }
-    }
-    
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
-    
-    out.println("<htm>");
-    out.println("<head><title>로그인</title></head>");
-    out.println("<body>");
-    out.println("<h1>로그인</h1>");
-    out.println("<form action='login' method='post'>");
-    out.println("<table border='1'>");
-    out.println("<tr>");
-    out.println("  <th>이메일</th>");
-    out.printf("  <td><input type='email' name='email' value='%s'></td>\n", email);
-    out.println("</tr>");
-    out.println("<tr>");
-    out.println("  <th>암호</th>");
-    out.println("  <td><input type='password' name='password'></td>");
-    out.println("</tr>");
-    out.println("</table>");
-    out.println("<input type='checkbox' name='saveEmail'> 이메일 저장");
-    out.println("<p>");
-    out.println("  <button>로그인</button>");
-    out.println("</p>");
-    out.println("</form>");
-    out.println("</body>");
-    out.println("</html>");
+    // 뷰 컴포넌트의 URL을 ServletRequest 보관소에 저장한다.
+    request.setAttribute("viewUrl", "/auth/form.jsp");
   }
   
   @Override
@@ -82,14 +41,22 @@ public class LoginServlet extends HttpServlet {
     if (request.getParameter("saveEmail") != null) {
       cookie = new Cookie("email", request.getParameter("email"));
       cookie.setMaxAge(60 * 60 * 24 * 15); // 15일간 쿠키를 보관한다.
+      // 프론트 컨트롤러를 도입하였기 때문에 경로를 따로 설정해야 한다.
+      cookie.setPath(getServletContext().getContextPath());
+      System.out.println("====>");
     } else {
       cookie = new Cookie("email", "");
       cookie.setMaxAge(0); // 기존의 쿠키를 제거한다.
     }
-    response.addCookie(cookie);
     
-    // 도대체 어느 페이지에서 이리로 보냈나?
-    System.out.println(request.getHeader("Referer"));
+    // 인클루딩 서블릿 쪽에서 쿠키를 추가할 수 없다.
+    //response.addCookie(cookie); // 동작 안함!
+
+    // 쿠키를 응답 헤더에 추가하는 것은 프론트 컨트롤러에게 맡긴다.
+    ArrayList<Cookie> cookies = new ArrayList<>();
+    cookies.add(cookie);
+    request.setAttribute("cookies", cookies);
+    
     
     // Spring IoC 컨테이너에서 BoardService 객체를 꺼낸다.
     ServletContext sc = this.getServletContext();
@@ -102,13 +69,8 @@ public class LoginServlet extends HttpServlet {
         request.getParameter("password"));
     
     if (member == null) {
-      response.setHeader("Refresh", "2;url=login");
-      response.setContentType("text/html;charset=UTF-8");
-      PrintWriter out = response.getWriter();
-      out.println("<html><head><title>로그인 실패</title></head><body>");
-      out.println("<h1>로그인 오류</h1>");
-      out.println("<p>이메일 또는 암호가 맞지 않습니다.</p>");
-      out.println("</body></html>");
+      // 뷰 컴포넌트의 URL을 ServletRequest 보관소에 저장한다.
+      request.setAttribute("viewUrl", "/auth/fail.jsp");
       return;
     }
     
@@ -119,20 +81,11 @@ public class LoginServlet extends HttpServlet {
     
     // 로그인 성공하면 다시 메인 화면으로 보낸다.
     String refererUrl = (String) session.getAttribute(REFERER_URL);
-    if (refererUrl == null) {
-      response.sendRedirect("../");
+    if (refererUrl == null) {      // 뷰 컴포넌트의 URL을 ServletRequest 보관소에 저장한다.
+      request.setAttribute("viewUrl", "redirect:" + getServletContext().getContextPath());
     } else {
-      response.sendRedirect(refererUrl);
+      // 뷰 컴포넌트의 URL을 ServletRequest 보관소에 저장한다.
+      request.setAttribute("viewUrl", "redirect:" + refererUrl);
     }
   }
 }
-
-
-
-
-
-
-
-
-
-

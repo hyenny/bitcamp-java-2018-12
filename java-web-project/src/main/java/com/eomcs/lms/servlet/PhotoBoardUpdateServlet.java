@@ -21,15 +21,15 @@ import com.eomcs.lms.service.PhotoBoardService;
 @WebServlet("/photoboard/update")
 @SuppressWarnings("serial")
 public class PhotoBoardUpdateServlet extends HttpServlet {
-  
+
   String uploadDir; 
-  
+
   @Override
   public void init() throws ServletException {
     this.uploadDir = this.getServletContext().getRealPath(
         "/upload/photoboard");
   }
-  
+
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
@@ -64,15 +64,13 @@ public class PhotoBoardUpdateServlet extends HttpServlet {
 
     if (files.size() > 0) {
       photoBoardService.update(board);
-      response.sendRedirect("list");
-      return;
+      request.setAttribute("viewUrl", "redirect:list");
+    } else {
+      // 오류 내용을 출력하는 JSP로 포워딩한다.
+      request.setAttribute("error.Title", "사진 변경");
+      request.setAttribute("error.content", "최소 한 개의 사진 파일을 등록해야 합니다.");
     }
 
-    // 오류 내용을 출력하는 JSP로 포워딩한다.
-    request.setAttribute("error.Title", "사진 변경");
-    request.setAttribute("error.content", "최소 한 개의 사진 파일을 등록해야 합니다.");
-
-    request.getRequestDispatcher("/error.jsp").forward(request, response);
 
   }
 

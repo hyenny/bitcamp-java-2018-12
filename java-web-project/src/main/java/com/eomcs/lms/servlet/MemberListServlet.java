@@ -28,11 +28,8 @@ public class MemberListServlet extends HttpServlet {
     
     // JSP가 게시물 목록을 다룰 수 있도록 ServletRequest 보관소에 저장한다.
     request.setAttribute("list", members);
-
     
-    response.setContentType("text/html;charset=UTF-8");
-
-    request.getRequestDispatcher("/member/list.jsp").include(request, response);
+    request.setAttribute("viewUrl", "/member/list.jsp");
 
   }
 
