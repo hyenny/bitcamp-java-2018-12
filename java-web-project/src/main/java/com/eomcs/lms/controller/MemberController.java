@@ -1,51 +1,50 @@
-package com.eomcs.lms.servlet;
-import java.io.IOException;
+package com.eomcs.lms.controller;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import com.eomcs.lms.context.RequestMapping;
+import com.eomcs.lms.context.RequestParam;
 import com.eomcs.lms.domain.Member;
 import com.eomcs.lms.service.MemberService;
 
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5)
-@SuppressWarnings("serial")
-@WebServlet("/member/add")
-public class MemberAddServlet extends HttpServlet {
+@Controller
+public class MemberController {
   
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-
-    request.setAttribute("viewUrl", "/member/form.jsp");
-   
+  @Autowired MemberService memberService;
+  @Autowired ServletContext serviceContext;
+  
+  
+  @RequestMapping("/member/form")
+  public String form() throws Exception {
+    return "/member/form.jsp";
   }
   
   
-  @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-
-    ServletContext sc = this.getServletContext();
-    ApplicationContext iocContainer = 
-        (ApplicationContext) sc.getAttribute("iocContainer");
-    MemberService memberService = iocContainer.getBean(MemberService.class);
+  @RequestMapping("/member/add")
+  public String add(HttpServletRequest request,
+      @RequestParam("name") String name,
+      @RequestParam("email") String email,
+      @RequestParam("password") String password,
+      @RequestParam("tel") String tel,
+      @RequestParam("photo") Part photo) throws Exception {
     
     Member member = new Member();
-    member.setName(request.getParameter("name"));
-    member.setEmail(request.getParameter("email"));
-    member.setPassword(request.getParameter("password"));
-    member.setTel(request.getParameter("tel"));
+    member.setName(name);
+    member.setEmail(email);
+    member.setPassword(password);
+    member.setTel(tel);
     
-    Part photo = request.getPart("photo");
+    photo = request.getPart("photo");
     if (photo.getSize() > 0) {
       String filename = UUID.randomUUID().toString();
-      String uploadDir = this.getServletContext().getRealPath(
+      String uploadDir = request.getServletContext().getRealPath(
           "/upload/member");
       photo.write(uploadDir + "/" + filename);
       member.setPhoto(filename);
@@ -53,8 +52,83 @@ public class MemberAddServlet extends HttpServlet {
 
     memberService.add(member);
     
-    request.setAttribute("viewUrl", "redirect:list");
+    return "redirect:list";
+    
+  } 
+  
+  @RequestMapping("/member/delete")
+  public String delete(@RequestParam("no") int no) throws Exception {
+
+    if (memberService.delete(no) == 0) {
+      throw new Exception("해당 회원이 없습니다.");
+    }
+    
+    return "redirect:list";
   }
+
+  @RequestMapping("/member/detail")
+  public String detail(
+      @RequestParam("no") int no,
+      Map<String,Object> map) throws Exception {
+
+
+    Member member = memberService.get(no);
+    
+    map.put("member", member);
+    
+    return "/member/detail.jsp";
+  }
+  
+  @RequestMapping("/member/list")
+  public String list(Map<String,Object> map) throws Exception {
+    List<Member> members = memberService.list(null);
+    map.put("list", members);
+
+    return "/member/list.jsp";
+  }
+  
+  @RequestMapping("/member/search")
+  public String search(
+      @RequestParam("keyword") String keyword,
+      Map<String,Object> map) throws Exception {
+    List<Member> members = memberService.list(keyword);
+
+    map.put("list", members);
+    
+    return "/member/list.jsp";
+  }
+  
+  @RequestMapping("/member/update")
+  public String update(
+      @RequestParam("no") int no,
+      @RequestParam("name") String name,
+      @RequestParam("email") String email,
+      @RequestParam("password") String password,
+      @RequestParam("tel") String tel,
+      @RequestParam("photo") Part photo) throws Exception {
+    Member member = new Member();
+    member.setNo(no);
+    member.setName(name);
+    member.setEmail(email);
+    member.setPassword(password);
+    member.setTel(tel);
+
+    photo = request.getPart("photo");
+    if (photo.getSize() > 0) {
+      String filename = UUID.randomUUID().toString();
+      String uploadDir = servletContext.getRealPath(
+          "/upload/member");
+      photo.write(uploadDir + "/" + filename);
+      member.setPhoto(filename);
+    }
+    
+    if (memberService.update(member) == 0) 
+      throw new Exception("해당 회원이 없습니다");
+    
+    return "redirect:list";
+  }
+  
+  
   
 
 }

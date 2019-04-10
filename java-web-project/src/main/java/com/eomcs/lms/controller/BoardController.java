@@ -1,53 +1,78 @@
-package com.eomcs.lms.servlet;
-import java.io.IOException;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.context.ApplicationContext;
+package com.eomcs.lms.controller;
+
+import java.util.List;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import com.eomcs.lms.context.RequestMapping;
+import com.eomcs.lms.context.RequestParam;
 import com.eomcs.lms.domain.Board;
 import com.eomcs.lms.service.BoardService;
 
-@SuppressWarnings("serial")
-@WebServlet("/board/add")
-public class BoardAddServlet extends HttpServlet {
+@Controller
+public class BoardController {
   
-  @Override
-  protected void doGet(
-      HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    request.setAttribute("viewUrl", "/board/form.jsp");
+  @Autowired BoardService boardService;
+  
+  @RequestMapping("/board/form")
+  public String form() throws Exception {
+    return "/board/form.jsp";
   }
   
-  @Override
-  protected void doPost(
-      HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    
-    // Spring IoC 컨테이너에서 BoardService 객체를 꺼낸다.
-    ServletContext sc = this.getServletContext();
-    ApplicationContext iocContainer = 
-        (ApplicationContext) sc.getAttribute("iocContainer");
-    BoardService boardService = iocContainer.getBean(BoardService.class);
+  @RequestMapping("/board/add")
+  public String add(
+      @RequestParam("contents") String contents) throws Exception {
     
     Board board = new Board();
-    board.setContents(request.getParameter("contents")
-        + ":" + request.getRemoteAddr());
+    board.setContents(contents);
     
     boardService.add(board);
     
-    request.setAttribute("viewUrl", "redirect:list");
+    return "redirect:list";
+  }
+  
+  @RequestMapping("/board/delete")
+  public String delete(@RequestParam("no") int no) throws Exception {
+  
+    if (boardService.delete(no) == 0) 
+      throw new Exception("해당 번호의 게시물이 없습니다.");
+    
+    return "redirect:list";
+  }
+  
+  @RequestMapping("/board/detail")
+  public String detail(
+      @RequestParam("no") int no,
+      Map<String,Object> map) throws Exception {
+
+    Board board = boardService.get(no);
+    map.put("board", board);
+    
+    // 뷰 컴포넌트의 URL을 프론트 컨트롤러에게 리턴한다.
+    return "/board/detail.jsp";
+  }
+  
+  @RequestMapping("/board/list")
+  public String list(Map<String,Object> map) throws Exception {
+    
+    List<Board> boards = boardService.list();
+    map.put("list", boards);
+    
+    // 뷰 컴포넌트의 URL을 이 메서드를 호출한 프론트 컨트롤러에게 리턴한다.
+    return "/board/list.jsp";
+  }
+  
+  @RequestMapping("/board/update")
+  public String update(
+      @RequestParam("no") int no,
+      @RequestParam("contents") String contents) throws Exception {
+    Board board = new Board();
+    board.setNo(no);
+    board.setContents(contents);
+    
+    if (boardService.update(board) == 0) 
+      throw new Exception("해당 번호의 게시물이 없습니다.");
+      
+    return "redirect:list";
   }
 }
-
-
-
-
-
-
-
-
-
-
