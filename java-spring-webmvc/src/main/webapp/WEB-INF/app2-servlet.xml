@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+  
+  <context:component-scan base-package="bitcamp.app2"/>
+  
+  <!-- component-scan 태그는 @MatrixVariable 애노테이션을 처리할 객체를 추가하지 않는다 
+       이 애노테이션을 처리하려면 다음의 태그를 선언하여 관련 객체를 간접적으로 등록해야 한다.-->
+  <mvc:annotation-driven enable-matrix-variables="true"/>
+  
+  <!-- 기존의 뷰 리졸버를 대체한다. -->
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+    <property name="prefix" value="/WEB-INF/jsp2/"/>
+    <property name="suffix" value=".jsp"/>
+  </bean>
+  
+  <!-- 인터셉터 배치하기 -->
+  
+  <mvc:interceptors>
+    <!--  특정 URL을 요청했을 때 실행될 인터셉터 배치하기 -->
+    <mvc:interceptor>
+      <mvc:mapping path="/c04_1/*"/>
+      <bean class="bitcamp.app2.Controller"
+    </mvc:interceptor>
+  </mvc:interceptors>
+  
+</beans>
