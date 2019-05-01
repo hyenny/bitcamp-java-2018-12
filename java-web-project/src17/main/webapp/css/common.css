@@ -1,0 +1,27 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Do+Hyeon');
+
+body {
+	font-size: small;
+}
+
+h1 {
+	/*text-align: center;*/
+	font-family: 'Do Hyeon', sans-serif;
+}
+
+div.bit-list {
+	min-height: 200px;
+}
+
+div.bit-search {
+	margin-right: auto;
+}
+
+div.container {
+	width: 800px;
+}
+
+#bt-login-state {
+	margin: 0px 10px;
+}

@@ -27,14 +27,16 @@
     <property name="suffix" value=".jsp"/>
   </bean>
   
+  
   <!-- 인터셉터 배치하기 -->
   
+  <!-- 
   <mvc:interceptors>
-    <!--  특정 URL을 요청했을 때 실행될 인터셉터 배치하기 -->
     <mvc:interceptor>
       <mvc:mapping path="/c04_1/*"/>
       <bean class="bitcamp.app2.Controller"
     </mvc:interceptor>
   </mvc:interceptors>
+   -->
   
 </beans>

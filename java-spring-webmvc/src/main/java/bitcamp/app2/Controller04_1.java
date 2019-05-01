@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller 
-@RequestMapping("/c03_1")
+@RequestMapping("/c04_1")
 public class Controller04_1 {
 
   // 테스트:
