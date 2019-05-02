@@ -37,7 +37,7 @@ public class BoardController {
     return "redirect:../";
   }
   
-  @GetMapping("{no}")
+  @GetMapping("/detail")
   public String detail(
       @PathVariable int no,
       Model model) throws Exception {

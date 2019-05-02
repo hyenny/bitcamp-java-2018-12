@@ -1,0 +1,14 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Do+Hyeon');
+
+
+.bit-main-header {
+	min-height: 60px;
+}
+
+#bit-login-state img {
+	height:30px;
+}
+
+
+

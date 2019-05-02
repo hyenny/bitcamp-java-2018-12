@@ -5,9 +5,14 @@ body {
 	font-size: small;
 }
 
-h1 {
+body > header {
+	min-height: 60px;
+}
+
+.container > h1 {
 	/*text-align: center;*/
 	font-family: 'Do Hyeon', sans-serif;
+	height: 40px;
 }
 
 div.bit-list {
@@ -22,6 +27,10 @@ div.container {
 	width: 800px;
 }
 
-#bt-login-state {
-	margin: 0px 10px;
+.bit-invisible {
+  display: none;
+}
+
+#bit-login-state {
+  margin: 0px 10px;
 }
