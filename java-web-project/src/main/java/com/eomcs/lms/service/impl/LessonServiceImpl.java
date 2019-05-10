@@ -33,8 +33,11 @@ public class LessonServiceImpl implements LessonService {
   
   // 비지니스 객체에서 메서드 이름은 가능한 업무 용어를 사용한다.
   @Override
-  public List<Lesson> list() {
-    return lessonDao.findAll();
+  public List<Lesson> list(int pageNo, int pageSize, String keyword) {
+    if (keyword == null)
+      return lessonDao.findAll();
+    else
+      return lessonDao.findByKeyword(keyword);
   }
   
   @Override
@@ -68,4 +71,11 @@ public class LessonServiceImpl implements LessonService {
     
     return count;
   }
+
+  @Override
+  public int size() {
+    // 전체 게시물의 개수
+    return lessonDao.countAll();
+  }
+
 }
