@@ -34,8 +34,13 @@ public class LessonServiceImpl implements LessonService {
   // 비지니스 객체에서 메서드 이름은 가능한 업무 용어를 사용한다.
   @Override
   public List<Lesson> list(int pageNo, int pageSize, String keyword) {
+    
+    HashMap<String,Object> params = new HashMap<>();
+    params.put("size", pageSize);
+    params.put("rowNo", (pageNo - 1) * pageSize);
+    
     if (keyword == null)
-      return lessonDao.findAll();
+      return lessonDao.findAll(params);
     else
       return lessonDao.findByKeyword(keyword);
   }
@@ -73,9 +78,18 @@ public class LessonServiceImpl implements LessonService {
   }
 
   @Override
-  public int size() {
+  public int size(String keyword) {
+    
+    
+    if (keyword != null) {
+      HashMap<String,Object> params = new HashMap<>();
+      params.put("keyword", keyword);
+     
+      return lessonDao.countAll(params);  
+    }
+    
     // 전체 게시물의 개수
-    return lessonDao.countAll();
+    return lessonDao.countAll(null);
   }
 
 }

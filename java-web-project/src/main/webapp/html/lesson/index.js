@@ -3,52 +3,58 @@ var pageNo = 1,
     tbody = $('tbody'),
     prevPageLi = $('#prevPage'),
     nextPageLi = $('#nextPage'),
-    currSpan = $('#currPage > span');
+    currSpan = $('#currPage > span'),
+    searchBtn = $('#searchBtn'),
+    keyword = $('#keyword');
 
 // JSON 형식의 데이터 목록 가져오기
 function loadList(pn) {
-  
-  $.getJSON('../../app/json/lesson/list?pageNo=' + pn + '&pageSize=' + pageSize, 
-    function(obj) {
-      // 서버에 받은 데이터 중에서 페이지 번호를 글로벌 변수에 저장한다.
-      pageNo = obj.pageNo;
-      
-      // TR 태그를 생성하여 테이블 데이터를 갱신한다.
-      tbody.html(''); // 이전에 출력한 내용을 제거한다.
-      
-      // script 태그에서 템플릿 데이터를 꺼낸다.
-      var templateSrc = $('#tr-template').html();
-      
-      // Handlerbars를 통해 템플릿 데이터를 가지고 최종 결과를 생성할 함수를 준비한다.
-      var trGenerator = Handlebars.compile(templateSrc);
-      
-      $(trGenerator(obj)).appendTo(tbody);
-      
-      
-      
-      // 현재 페이지의 번호를 갱신한다.
-      currSpan.html(String(pageNo));
-      
-      // 1페이지일 경우 버튼을 비활성화 한다.
-      if (pageNo == 1) {
-        prevPageLi.addClass('disabled');
-      } else {
-        prevPageLi.removeClass('disabled');
-      } 
-        
-      // 마지막 페이지일 경우 버튼을 비활성화 한다.
-      if (pageNo == obj.totalPage) {
-        nextPageLi.addClass('disabled');
-      } else {
-        nextPageLi.removeClass('disabled');
-      }
-      
-      // 데이터 로딩이 완료되면 body 태그에 이벤트를 전송한다.
-      $(document.body).trigger('loaded-list');
-      
-    }); // Bitcamp.getJSON()
-  
+	console.log(pn);
+	console.log(pageSize);
+	  $.getJSON('../../app/json/lesson/list?pageNo=' + pn + '&pageSize=' + pageSize
+			  + '&keyword=' + $('#keyword').val(), 
+			    function(obj) {
+			      // 서버에 받은 데이터 중에서 페이지 번호를 글로벌 변수에 저장한다.
+			      pageNo = obj.pageNo;
+			      
+			      // TR 태그를 생성하여 테이블 데이터를 갱신한다.
+			      tbody.html(''); // 이전에 출력한 내용을 제거한다.
+			      
+			      // script 태그에서 템플릿 데이터를 꺼낸다.
+			      var templateSrc = $('#tr-template').html();
+			      
+			      // Handlerbars를 통해 템플릿 데이터를 가지고 최종 결과를 생성할 함수를 준비한다.
+			      var trGenerator = Handlebars.compile(templateSrc);
+			      
+			      $(trGenerator(obj)).appendTo(tbody);
+			      
+			      
+			      
+			      // 현재 페이지의 번호를 갱신한다.
+			      currSpan.html(String(pageNo));
+			      
+			      // 1페이지일 경우 버튼을 비활성화 한다.
+			      if (pageNo == 1) {
+			        prevPageLi.addClass('disabled');
+			      } else {
+			        prevPageLi.removeClass('disabled');
+			      } 
+			        
+			      // 마지막 페이지일 경우 버튼을 비활성화 한다.
+			      if (pageNo == obj.totalPage) {
+			        nextPageLi.addClass('disabled');
+			      } else {
+			        nextPageLi.removeClass('disabled');
+			      }
+			      
+			      // 데이터 로딩이 완료되면 body 태그에 이벤트를 전송한다.
+			      $(document.body).trigger('loaded-list');
+			      
+			    }); // Bitcamp.getJSON()
+	  
 } // loadList()
+
+
 
 $('#prevPage > a').click((e) => {
   e.preventDefault();
@@ -63,6 +69,47 @@ $('#nextPage > a').click((e) => {
 
 //페이지를 출력한 후 1페이지 목록을 로딩한다.
 loadList(1);
+
+
+
+//http://localhost:8080/java-web-project/app/json/lesson/list?pageNo=1&pageSize=4&keyword=html
+//http://localhost:8080/java-web-project/app/json/lesson/list?keyword=css
+//function loadSearchList(keyword) {
+//	console.log(keyword)
+//	$.getJSON('../../app/json/lesson/list?keyword=' + $('#keyword').val(), 
+//		    function(obj) {
+//		      keyword = $('#keyword').val();
+//		      
+//		      // TR 태그를 생성하여 테이블 데이터를 갱신한다.
+//		      tbody.html(''); // 이전에 출력한 내용을 제거한다.
+//		      
+//		      // script 태그에서 템플릿 데이터를 꺼낸다.
+//		      var templateSrc = $('#tr-template').html();
+//		      
+//		      // Handlerbars를 통해 템플릿 데이터를 가지고 최종 결과를 생성할 함수를 준비한다.
+//		      var trGenerator = Handlebars.compile(templateSrc);
+//		      
+//		      $(trGenerator(obj)).appendTo(tbody);
+//		      
+//		      
+//		      
+//		      // 현재 페이지의 번호를 갱신한다.
+//		      //currSpan.html("1");
+//		      
+//		      // 데이터 로딩이 완료되면 body 태그에 이벤트를 전송한다.
+//		      $(document.body).trigger('loaded-list');
+//		      
+//		    }); // Bitcamp.getJSON()
+//	
+//}
+
+$('#searchBtn').click((e) => {
+	e.preventDefault();
+	loadList(1);	
+});
+
+
+
 
 // 테이블 목록 가져오기를 완료했으면 제목 a 태그에 클릭 리스너를 등록한다. 
 $(document.body).bind('loaded-list', () => {

@@ -62,10 +62,20 @@ public class LessonController {
       @RequestParam(defaultValue="3") int pageSize,
       String keyword) {
     
+    int rowCount;
+    
     if (pageSize < 3 || pageSize > 8) 
       pageSize = 3;
     
-    int rowCount = lessonService.size();
+    if (keyword != null) {
+      rowCount = lessonService.size(keyword);
+    } else {
+      rowCount = lessonService.size(null);
+    }
+    
+    System.out.println(rowCount);
+    
+    
     int totalPage = rowCount / pageSize;
     if (rowCount % pageSize > 0)
       totalPage++;

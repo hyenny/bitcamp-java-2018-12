@@ -49,8 +49,8 @@ public class LessonController {
 
   @GetMapping
   public String list(Model model) throws Exception {
-    List<Lesson> lessons = lessonService.list();
-    model.addAttribute("list", lessons);
+    //List<Lesson> lessons = lessonService.list();
+    //model.addAttribute("list", lessons);
     
     return "lesson/list";
   }

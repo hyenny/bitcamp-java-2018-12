@@ -24,7 +24,7 @@
     tot_hr
   </sql>
 
-  <select id="findAll" resultMap="lessonMap">
+  <select id="findAll" resultMap="lessonMap" parameterType="map">
     select
     <include refid="default-columns" />
     from
@@ -96,8 +96,14 @@
     where lesson_id = #{value}
   </delete>
 
-  <select id="countAll" resultType="int">
+  <select id="countAll" parameterType="map" resultType="int">
     select count(*) from lms_lesson
+    <where>
+      <if test="keyword != null">
+        <bind name="pattern1" value="'%' + _parameter + '%'" />
+        titl like #{pattern1} or conts like #{pattern1} 
+      </if>
+    </where>
   </select>
 
 </mapper>

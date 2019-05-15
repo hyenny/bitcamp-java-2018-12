@@ -1,6 +1,7 @@
 package com.eomcs.lms.service;
 
 import java.util.List;
+import java.util.Map;
 import com.eomcs.lms.domain.Lesson;
 
 public interface LessonService {
@@ -9,5 +10,5 @@ public interface LessonService {
   Lesson get(int no);
   int update(Lesson lesson);
   int delete(int no);
-  int size();
+  int size(String keyword);
 }
