@@ -71,38 +71,6 @@ $('#nextPage > a').click((e) => {
 loadList(1);
 
 
-
-//http://localhost:8080/java-web-project/app/json/lesson/list?pageNo=1&pageSize=4&keyword=html
-//http://localhost:8080/java-web-project/app/json/lesson/list?keyword=css
-//function loadSearchList(keyword) {
-//	console.log(keyword)
-//	$.getJSON('../../app/json/lesson/list?keyword=' + $('#keyword').val(), 
-//		    function(obj) {
-//		      keyword = $('#keyword').val();
-//		      
-//		      // TR 태그를 생성하여 테이블 데이터를 갱신한다.
-//		      tbody.html(''); // 이전에 출력한 내용을 제거한다.
-//		      
-//		      // script 태그에서 템플릿 데이터를 꺼낸다.
-//		      var templateSrc = $('#tr-template').html();
-//		      
-//		      // Handlerbars를 통해 템플릿 데이터를 가지고 최종 결과를 생성할 함수를 준비한다.
-//		      var trGenerator = Handlebars.compile(templateSrc);
-//		      
-//		      $(trGenerator(obj)).appendTo(tbody);
-//		      
-//		      
-//		      
-//		      // 현재 페이지의 번호를 갱신한다.
-//		      //currSpan.html("1");
-//		      
-//		      // 데이터 로딩이 완료되면 body 태그에 이벤트를 전송한다.
-//		      $(document.body).trigger('loaded-list');
-//		      
-//		    }); // Bitcamp.getJSON()
-//	
-//}
-
 $('#searchBtn').click((e) => {
 	e.preventDefault();
 	loadList(1);	

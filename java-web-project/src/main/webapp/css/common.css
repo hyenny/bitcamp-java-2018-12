@@ -13,6 +13,7 @@ body > header {
 	/*text-align: center;*/
 	font-family: 'Do Hyeon', sans-serif;
 	height: 40px;
+	margin: 15px;
 }
 
 div.bit-list {

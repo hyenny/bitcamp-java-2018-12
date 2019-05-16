@@ -62,15 +62,19 @@ public class LessonController {
       @RequestParam(defaultValue="3") int pageSize,
       String keyword) {
     
+    System.out.printf("컨트롤러 : %d %d %s\n", pageNo, pageSize, keyword);
+    
     int rowCount;
     
     if (pageSize < 3 || pageSize > 8) 
       pageSize = 3;
     
-    if (keyword != null) {
+    if (keyword != "") {
       rowCount = lessonService.size(keyword);
+      System.out.println("검색한 키워드 개수 : " + rowCount);
     } else {
       rowCount = lessonService.size(null);
+      System.out.println("전체 열 개수: " + rowCount);
     }
     
     System.out.println(rowCount);

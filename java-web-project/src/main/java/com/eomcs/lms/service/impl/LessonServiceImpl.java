@@ -38,11 +38,12 @@ public class LessonServiceImpl implements LessonService {
     HashMap<String,Object> params = new HashMap<>();
     params.put("size", pageSize);
     params.put("rowNo", (pageNo - 1) * pageSize);
+    params.put("keyword", keyword);
     
-    if (keyword == null)
+    if (keyword == "") 
       return lessonDao.findAll(params);
     else
-      return lessonDao.findByKeyword(keyword);
+      return lessonDao.findByKeyword(params);
   }
   
   @Override
@@ -80,10 +81,10 @@ public class LessonServiceImpl implements LessonService {
   @Override
   public int size(String keyword) {
     
-    
     if (keyword != null) {
       HashMap<String,Object> params = new HashMap<>();
       params.put("keyword", keyword);
+      
      
       return lessonDao.countAll(params);  
     }
