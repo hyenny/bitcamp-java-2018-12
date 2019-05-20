@@ -52,6 +52,8 @@ function loadLoginUser() {
     
     var data = JSON.parse(xhr.responseText);
     
+    //console.log(data);
+    
     var loginState = document.querySelector('#bit-login-state'),
         notLoginState = document.querySelector('#bit-not-login-state');
     
@@ -66,7 +68,6 @@ function loadLoginUser() {
         notLoginState.className.replace('bit-invisible', '');
     }
     
-    console.log(document.querySelector('#bit-login-state').className);
   };
   xhr.open('GET', '/java-web-project/app/json/auth/user', true)
   xhr.send()

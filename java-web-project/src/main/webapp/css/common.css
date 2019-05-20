@@ -35,3 +35,7 @@ div.container {
 #bit-login-state {
   margin: 0px 10px;
 }
+
+#imgBox > img {
+	height: 100px;
+}

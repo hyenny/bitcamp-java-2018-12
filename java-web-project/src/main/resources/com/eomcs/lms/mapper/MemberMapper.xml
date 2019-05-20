@@ -101,6 +101,17 @@
     delete from lms_member 
     where member_id = #{value}
   </delete>
+  
+  <select id="countAll" parameterType="map" resultType="int">
+    select count(*) from lms_member
+    <where>
+      <if test="keyword != null">
+        <bind name="pattern1" value="'%' + keyword + '%'" />
+        name like #{pattern1}
+      </if>
+    </where>
+  </select>
+  
 </mapper>
 
 
