@@ -1,3 +1,4 @@
+
 var param = location.href.split('?')[1];
 if (param) {
 	document.querySelector('h1').innerHTML = "회원 조회";
@@ -18,18 +19,18 @@ var imgBox = $('#imgBox');
 
 
 //$('#photoFile').fileupload({
-//	dataType: 'json', /* "서버가 보낸 데이터가 JSON 문자열이다. 자바스크립트 객체로 바꿔라." 라는 의미*/
-//	done: function (e, data) { 
-//		console.log('done()...');
-//	console.log(data.result);
-//
-//	$('<img>')
-//	.attr('src', '../../upload/member/' + data.result.name)
-//	.appendTo(imgBox);
-//	$('<img>')
-//	.attr('src', '../../upload/member/' + data.result.name + '_50x50.jpg')
-//	.appendTo(imgBox);
-//	}
+//dataType: 'json', /* "서버가 보낸 데이터가 JSON 문자열이다. 자바스크립트 객체로 바꿔라." 라는 의미*/
+//done: function (e, data) { 
+//console.log('done()...');
+//console.log(data.result);
+
+//$('<img>')
+//.attr('src', '../../upload/member/' + data.result.name)
+//.appendTo(imgBox);
+//$('<img>')
+//.attr('src', '../../upload/member/' + data.result.name + '_50x50.jpg')
+//.appendTo(imgBox);
+//}
 //});
 
 
@@ -58,12 +59,7 @@ var imgBox = $('#imgBox');
 //var totalHours = document.querySelector('#totalHours').value;
 //var dayHours = document.querySelector('#dayHours').value;
 
-//var qs = 'title=' + encodeURIComponent(title) +
-//'&contents=' + encodeURIComponent(contents) +
-//'&startDate=' + startDate +
-//'&endDate=' + endDate +
-//'&totalHours=' + totalHours +
-//'&dayHours=' + dayHours;
+
 
 //xhr.send(qs);
 
@@ -127,14 +123,37 @@ var imgBox = $('#imgBox');
 
 //};
 
+//$('#add-btn').click((e) => {
+//	var name = $('#name').val(),
+//	email = $('#email').val(),
+//	password = $('#password').val(),
+//	photoFile = $('#photoFile').val(),
+//	tel = $('#tel').val();
+//
+//	var qs = 'name=' + encodeURIComponent(name) +
+//	'&email=' + email +
+//	'&password=' + encodeURIComponent(password) +
+//	'&photoFile=' + photoFile +
+//	'&tel=' + tel;
+//
+//
+//	//var qs = $( "form" ).serialize();
+//
+//	console.log(qs);
+//
+//});
+
+
+
+
 
 function loadData(no) {
 	console.log(no);
 	$.getJSON('../../app/json/member/detail?no=' + no,
 			function(data) {
-		
+
 		console.log(data);
-		
+
 		var photoFile = data.photo;
 
 		$('#no').val(data.no);
@@ -144,11 +163,11 @@ function loadData(no) {
 		//$('#photoFile').val(photoFile);
 		$('#tel').val(data.tel);
 		$('#registeredDate').val(data.registeredDate);
-		
+
 		$('<img>')
 		.attr('src', '/java-web-project/upload/member/' + data.photo)
 		.appendTo(imgBox);
-		
+
 	});
 }
 

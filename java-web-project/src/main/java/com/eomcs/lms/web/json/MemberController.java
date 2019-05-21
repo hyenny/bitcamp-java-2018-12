@@ -1,5 +1,6 @@
 package com.eomcs.lms.web.json;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.domain.Member;
 import com.eomcs.lms.service.MemberService;
@@ -29,18 +31,22 @@ public class MemberController {
 
 
   @PostMapping("add")
-  public Object add(Member member, Part photoFile) {
-
+  public Object add(Member member, MultipartFile photoFile) {
+    
+    System.out.println("회원 : " + member);
+    System.out.println("파일 : " + photoFile);
+    
     HashMap<String, Object> content = new HashMap<>();
     try {
       
     if (photoFile.getSize() > 0) {
       String filename = UUID.randomUUID().toString();
-      String uploadDir = servletContext.getRealPath("/upload/member");
-      photoFile.write(uploadDir + "/" + filename);
+      String uploadDir = servletContext.getRealPath("/upload/member/" + filename);
+      photoFile.transferTo(new File(uploadDir));
+      //photoFile.write(uploadDir + "/" + filename);
       member.setPhoto(filename);
     }
-
+    
     memberService.add(member);
     content.put("status", "success");
     
