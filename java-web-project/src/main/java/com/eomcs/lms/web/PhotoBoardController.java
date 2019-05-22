@@ -2,12 +2,15 @@ package com.eomcs.lms.web;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Part;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.eomcs.lms.domain.Lesson;
@@ -17,34 +20,33 @@ import com.eomcs.lms.service.LessonService;
 import com.eomcs.lms.service.PhotoBoardService;
 
 @Controller
+@RequestMapping("/photoboard")
 public class PhotoBoardController {
 
   @Autowired LessonService lessonService;
   @Autowired PhotoBoardService photoBoardService;
   @Autowired ServletContext servletContext;
   
-  @RequestMapping("/photoboard/form")
-  public String form(Map<String,Object> map) {
-    List<Lesson> lessons = lessonService.list();
-    map.put("lessons", lessons);
-    return "/photoboard/form.jsp";
+  @GetMapping("form")
+  public void form(Model model) {
+    List<Lesson> lessons = lessonService.list(1, 100, null);
+    model.addAttribute("lessons", lessons);
   }
   
-  @RequestMapping("/photoboard/add")
-  public String add(PhotoBoard board,
-      @RequestParam("photo") Part[] photos) throws Exception {
+  @PostMapping("add")
+  public String add(PhotoBoard board, Part[] photo) throws Exception {
 
     ArrayList<PhotoFile> files = new ArrayList<>();
     
     String uploadDir = servletContext.getRealPath(
         "/upload/photoboard");
 
-    for (Part photo : photos) {
-      if (photo.getSize() == 0) 
+    for (Part part : photo) {
+      if (part.getSize() == 0) 
         continue;
       
       String filename = UUID.randomUUID().toString();
-      photo.write(uploadDir + "/" + filename);
+      part.write(uploadDir + "/" + filename);
       
       PhotoFile file = new PhotoFile();
       file.setFilePath(filename);
@@ -53,80 +55,78 @@ public class PhotoBoardController {
     board.setFiles(files);
 
     if (board.getLessonNo() == 0) {
-      throw new Exception("사진 또는 파일을 등록할 수업을 선택하세요.");
+      throw new RuntimeException("사진 또는 파일을 등록할 수업을 선택하세요.");
       
     } else if (files.size() == 0) {
-      throw new Exception("최소 한 개의 사진 파일을 등록해야 합니다.");
+      throw new RuntimeException("최소 한 개의 사진 파일을 등록해야 합니다.");
 
     } else if (board.getTitle().length() == 0) {
-      throw new Exception("사진 게시물 제목을 입력하세요.");
+      throw new RuntimeException("사진 게시물 제목을 입력하세요.");
 
     } else {
       photoBoardService.add(board);
-      return "redirect:list";
+      return "redirect:.";
     }
   }
   
-  @RequestMapping("/photoboard/delete")
-  public String delete(
-      @RequestParam("no") int no) throws Exception {
-
+  @GetMapping("delete/{no}")
+  public String delete(@PathVariable int no) {
     if (photoBoardService.delete(no) == 0)
-      throw new Exception("해당 번호의 사진이 없습니다.");
-      
-    return "redirect:list";
+      throw new RuntimeException("해당 번호의 사진이 없습니다.");
+    return "redirect:../";
   }
   
-  @RequestMapping("/photoboard/detail")
-  public String detail(
-      @RequestParam("no") int no,
-      Map<String,Object> map) throws Exception {
-    
+  @GetMapping("{no}")
+  public String detail(@PathVariable int no, Model model) {
     PhotoBoard board = photoBoardService.get(no);
-    List<Lesson> lessons = lessonService.list();
-    map.put("board", board);
-    map.put("lessons", lessons);
+    List<Lesson> lessons = lessonService.list(1, 100, null);
+    model.addAttribute("board", board);
+    model.addAttribute("lessons", lessons);
+    return "photoboard/detail";
+  }
+  
+  @GetMapping
+  public String list(
+      @RequestParam(defaultValue="1") int pageNo,
+      @RequestParam(defaultValue="3") int pageSize,
+      String search,
+      Model model) {
     
-    return  "/photoboard/detail.jsp";
-  }
-  
-  @RequestMapping("/photoboard/list")
-  public String list(Map<String,Object> map) {
-
-    List<PhotoBoard> boards = photoBoardService.list(0, null);
-    map.put("list", boards);
-    return "/photoboard/list.jsp";
-  }
-  
-  @RequestMapping("/photoboard/search")
-  public String search(
-      @RequestParam("lessonNo") int lessonNo,
-      @RequestParam("keyword") String keyword,
-      Map<String,Object> map) {
-
-    String searchWord = null;
-    if (keyword.length() > 0)
-      searchWord = keyword;
-
-    List<PhotoBoard> boards = photoBoardService.list(lessonNo, searchWord);
-    map.put("list", boards);
+    if (pageSize < 3 || pageSize > 8) 
+      pageSize = 3;
     
-    return "/photoboard/search.jsp";
+    int rowCount = photoBoardService.size(search);
+    int totalPage = rowCount / pageSize;
+    if (rowCount % pageSize > 0)
+      totalPage++;
+    
+    if (pageNo > totalPage)
+      pageNo = totalPage;
+    if (pageNo < 1) 
+      pageNo = 1;
+    
+    List<PhotoBoard> boards = photoBoardService.list(pageNo, pageSize, search);
+    model.addAttribute("list", boards);
+    model.addAttribute("pageNo", pageNo);
+    model.addAttribute("pageSize", pageSize);
+    model.addAttribute("totalPage", totalPage);
+    model.addAttribute("search", search);
+    
+    return "photoboard/list";
   }
   
-  @RequestMapping("/photoboard/update")
-  public String update(PhotoBoard board,
-      @RequestParam("photo") Part[] photos) throws Exception {
+  @PostMapping("update")
+  public String update(PhotoBoard board, Part[] photo) throws Exception {
 
     ArrayList<PhotoFile> files = new ArrayList<>();
     String uploadDir = servletContext.getRealPath("/upload/photoboard");
     
-    for (Part photo : photos) {
-      if (photo.getSize() == 0)
+    for (Part part : photo) {
+      if (part.getSize() == 0)
         continue;
 
       String filename = UUID.randomUUID().toString();
-      photo.write(uploadDir + "/" + filename);
+      part.write(uploadDir + "/" + filename);
 
       PhotoFile file = new PhotoFile();
       file.setFilePath(filename);
@@ -136,9 +136,9 @@ public class PhotoBoardController {
     board.setFiles(files);
 
     if (files.size() == 0) 
-      throw new Exception("최소 한 개의 사진 파일을 등록해야 합니다.");
+      throw new RuntimeException("최소 한 개의 사진 파일을 등록해야 합니다.");
     
     photoBoardService.update(board);
-    return "redirect:list";
+    return "redirect:.";
   }
 }

@@ -5,18 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.ServletContext;
-import javax.servlet.http.Part;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.domain.Member;
 import com.eomcs.lms.service.MemberService;
 
@@ -30,26 +25,29 @@ public class MemberController {
   ServletContext servletContext;
 
 
-  @PostMapping("add")
-  public Object add(Member member, MultipartFile photoFile) {
-    
+  @PostMapping(value = "add", consumes = "multipart/form-data")
+  public Object add(
+      Member member, 
+      @RequestParam(value = "photo") MultipartFile photo) {
+
+    System.out.println("-----add--------------");
     System.out.println("회원 : " + member);
-    System.out.println("파일 : " + photoFile);
-    
+    System.out.println("파일 : " + photo);
+
     HashMap<String, Object> content = new HashMap<>();
     try {
-      
-    if (photoFile.getSize() > 0) {
-      String filename = UUID.randomUUID().toString();
-      String uploadDir = servletContext.getRealPath("/upload/member/" + filename);
-      photoFile.transferTo(new File(uploadDir));
-      //photoFile.write(uploadDir + "/" + filename);
-      member.setPhoto(filename);
-    }
-    
-    memberService.add(member);
-    content.put("status", "success");
-    
+
+      if (photo.getSize() > 0) {
+        String filename = UUID.randomUUID().toString();
+        String uploadDir = servletContext.getRealPath("/upload/member/" + filename);
+        photo.transferTo(new File(uploadDir));
+        //photoFile.write(uploadDir + "/" + filename);
+        member.setPhoto(filename);
+      }
+
+      memberService.add(member);
+      content.put("status", "success");
+
     } catch (Exception e) {
       content.put("status","fail");
       content.put("message", e.getMessage());
@@ -59,19 +57,30 @@ public class MemberController {
   }
 
   @GetMapping("delete")
-  public String delete(@PathVariable int no) throws Exception {
+  public Object delete(int no) {
 
-    if (memberService.delete(no) == 0)
-      throw new Exception("해당 번호의 회원이 없습니다.");
+    HashMap<String,Object> content = new HashMap<>();
 
-    return "redirect:../";
+    try {
+      if (memberService.delete(no) == 0)
+        throw new Exception("해당 번호의 회원이 없습니다.");
+
+      content.put("status", "success");
+
+    } catch (Exception e) {
+      content.put("status", "fail");
+      content.put("message", e.getMessage());
+
+    }
+
+    return content;
   }
 
   @GetMapping("detail")
   public Object detail(int no) {
 
     Member member = memberService.get(no);
-  
+
     return member;
   }
 
@@ -106,6 +115,8 @@ public class MemberController {
 
 
     List<Member> members = memberService.list(pageNo, pageSize, keyword);
+    
+    System.out.println(members);
 
     HashMap<String, Object> content = new HashMap<>();
     content.put("list", members);
@@ -118,26 +129,43 @@ public class MemberController {
 
   }
 
-//  @GetMapping("search")
-//  public void search(String keyword, Model model) throws Exception {
-//
-//    List<Member> members = memberService.list(keyword);
-//    model.addAttribute("list", members);
-//  }
+  //  @GetMapping("search")
+  //  public void search(String keyword, Model model) throws Exception {
+  //
+  //    List<Member> members = memberService.list(keyword);
+  //    model.addAttribute("list", members);
+  //  }
 
-  @PostMapping("update")
-  public String update(Member member, Part photoFile) throws Exception {
+  @PostMapping(value = "update", consumes = "multipart/form-data")
+  public Object update(
+      Member member,
+      @RequestParam(value = "photo") MultipartFile photo) {
 
-    if (photoFile.getSize() > 0) {
-      String filename = UUID.randomUUID().toString();
-      String uploadDir = servletContext.getRealPath("/upload/member");
-      photoFile.write(uploadDir + "/" + filename);
-      member.setPhoto(filename);
+    System.out.println("-----update--------------");
+    System.out.println("회원 : " + member);
+    System.out.println("파일 : " + photo);
+
+    HashMap<String,Object> content = new HashMap<>();
+
+    try {
+      if (photo.getSize() > 0) {
+        String filename = UUID.randomUUID().toString();
+        String uploadDir = servletContext.getRealPath("/upload/member/" + filename);
+        photo.transferTo(new File(uploadDir));
+        member.setPhoto(filename);
+      }
+
+      if (memberService.update(member) == 0)
+        throw new Exception("해당 번호의 회원이 없습니다.");
+
+      content.put("status", "success");
+
+    } catch (Exception e) {
+      content.put("status", "fail");
+      content.put("message", e.getMessage());
+
     }
 
-    if (memberService.update(member) == 0)
-      throw new Exception("해당 번호의 회원이 없습니다.");
-
-    return "redirect:.";
+    return content;
   }
 }
