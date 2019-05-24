@@ -7,6 +7,7 @@ public class Board implements Cloneable, Serializable {
   private static final long serialVersionUID = 1L;
 
   private int no;
+  private String title;
   private String contents;
   
   @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
@@ -30,6 +31,16 @@ public class Board implements Cloneable, Serializable {
   public void setNo(int no) {
     this.no = no;
   }
+  
+  
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
   public String getContents() {
     return contents;
   }

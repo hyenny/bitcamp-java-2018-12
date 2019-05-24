@@ -56,6 +56,7 @@ $('#delete-btn').click((e) => {
 
 function saveData(url) {
 	var qs;
+	var title = $('#title').val();
 
 	for (instance in CKEDITOR.instances) {
 		CKEDITOR.instances[instance].updateElement();
@@ -63,10 +64,10 @@ function saveData(url) {
 	}
 
 	if (url.endsWith('add'))  {
-		qs = 'contents=' + encodeURIComponent(contents);
+		qs = 'title=' + encodeURIComponent(title) + '&contents=' + encodeURIComponent(contents);
 		console.log('add: ' + url, qs)
 	} else { // update
-		qs = 'contents=' + encodeURIComponent(contents) + '&no=' + no;
+		qs = 'title=' + encodeURIComponent(title) + '&contents=' + encodeURIComponent(contents) + '&no=' + no;
 		console.log('update: ' + url, qs)
 	}
 
@@ -96,6 +97,7 @@ function loadData(no) {
 		console.log(data);
 
 		$('#no').val(data.no);
+		$('#title').val(data.title);
 		$('#contents').val(data.contents);
 		$('#createdDate').val(data.createdDate);
 		$('#viewCount').val(data.viewCount);

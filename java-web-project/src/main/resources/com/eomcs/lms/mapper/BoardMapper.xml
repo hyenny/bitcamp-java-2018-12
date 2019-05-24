@@ -8,6 +8,7 @@
   
   <resultMap type="board" id="boardMap">
     <id column="board_id" property="no"/>
+    <result column="titl" property="title"/>
     <result column="conts" property="contents"/>
     <result column="cdt" property="createdDate"/>
     <result column="vw_cnt" property="viewCount"/>
@@ -15,7 +16,8 @@
   
   <sql id="select1">
     select 
-      board_id, 
+      board_id,
+      titl, 
       conts, 
       cdt, 
       vw_cnt 
@@ -46,14 +48,15 @@
   </update>
   
   <insert id="insert" parameterType="board">
-    insert into lms_board(conts) 
-    values(#{contents})
+    insert into lms_board(titl, conts) 
+    values(#{title}, #{contents})
   </insert>
   
   <update id="update" parameterType="board">
     update lms_board 
     set 
-      conts = #{contents} 
+      conts = #{contents},
+      titl = #{title} 
     where board_id = #{no}
   </update>
   
