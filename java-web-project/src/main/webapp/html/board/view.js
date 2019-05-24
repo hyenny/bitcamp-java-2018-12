@@ -1,106 +1,110 @@
 var param = location.href.split('?')[1];
+var contents;
+var no;
+
 if (param) {
-  document.querySelector('h1').innerHTML = "게시물 조회"
-  loadData(param.split('=')[1])
-  var el = document.querySelectorAll('.bit-new-item');
-  for (e of el) {
-    e.style.display = 'none';
-  }
+	$('h1').html('게시물 조회');
+	loadData(param.split('=')[1]);
+	var el = $('.bit-new-item');
+	for (e of el) {
+		e.style.display = 'none';
+	}
 } else {
-  document.querySelector('h1').innerHTML = "새 글"
-  var el = document.querySelectorAll('.bit-view-item');
-  for (e of el) {
-    e.style.display = 'none';
-  }
+	$('h1').html('새 글');
+	var el = $('.bit-view-item');
+	for (e of el) {
+		e.style.display = 'none';
+	}
 }
 
-document.querySelector('#add-btn').onclick = () => {
-  var xhr = new XMLHttpRequest()
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState != 4 || xhr.status != 200)
-      return;
-    
-    var data = JSON.parse(xhr.responseText);
-    
-    if (data.status == 'success') {
-      location.href = "index.html"
-        
-    } else {
-      alert('등록 실패입니다!\n' + data.message)
-    }
-  };
-  xhr.open('POST', '../../app/json/board/add', true)
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  
-  var contents = document.querySelector('#contents').value;
-  
-  xhr.send("contents=" + encodeURIComponent(contents));
-};
 
-document.querySelector('#delete-btn').onclick = () => {
-  var xhr = new XMLHttpRequest()
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState != 4 || xhr.status != 200)
-      return;
-    
-    var data = JSON.parse(xhr.responseText);
-    
-    if (data.status == 'success') {
-      location.href = "index.html"
-        
-    } else {
-      alert('삭제 실패입니다!\n' + data.message)
-    }
-  };
-  var no = document.querySelector('#no').value;
-  xhr.open('GET', '../../app/json/board/delete?no=' + no, true)
-  xhr.send();
-};
+var editor = CKEDITOR.replace('contents', {
+	width : '90%',
+	height : 300
+});
 
-document.querySelector('#update-btn').onclick = () => {
-  var xhr = new XMLHttpRequest()
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState != 4 || xhr.status != 200)
-      return;
-    
-    var data = JSON.parse(xhr.responseText);
-    
-    if (data.status == 'success') {
-      location.href = "index.html"
-        
-    } else {
-      alert('변경 실패입니다!\n' + data.message)
-    }
-  };
-  xhr.open('POST', '../../app/json/board/update', true)
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  
-  var no = document.querySelector('#no').value;
-  var contents = document.querySelector('#contents').value;
-  
-  var qs = 'contents=' + encodeURIComponent(contents) +
-    '&no=' + no;
-  
-  xhr.send(qs);
-};
+
+$('#add-btn').click((e) => {
+	e.preventDefault();
+	var url = '../../app/json/board/add';
+	saveData(url);
+});
+
+$('#update-btn').click((e) => {
+	e.preventDefault();
+	no = $('#no').val();
+	var url = '../../app/json/board/update';	
+	saveData(url);
+});
+
+$('#delete-btn').click((e) => {
+	e.preventDefault();
+	var no = $('#no').val();
+	$.getJSON('../../app/json/board/delete?no=' + no,
+			function(data) {
+
+		if (data.status == 'success') {
+			location.href = "index.html"
+		} else {
+			alert('삭제 실패입니다!\n' + data.message)
+		}
+
+	});
+});
+
+
+
+function saveData(url) {
+	var qs;
+
+	for (instance in CKEDITOR.instances) {
+		CKEDITOR.instances[instance].updateElement();
+		contents = CKEDITOR.instances[instance].getData();
+	}
+
+	if (url.endsWith('add'))  {
+		qs = 'contents=' + encodeURIComponent(contents);
+		console.log('add: ' + url, qs)
+	} else { // update
+		qs = 'contents=' + encodeURIComponent(contents) + '&no=' + no;
+		console.log('update: ' + url, qs)
+	}
+
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data: qs,
+		dataType: 'json',
+		success: function(data) {
+			console.log(data);
+			console.log('성공!');
+			if (data.status == 'success') {
+				location.href = "index.html"
+			} else {
+				alert('전송 실패입니다!\n' + data.message)
+			}
+		}
+	});  
+	return false; 
+
+}
 
 function loadData(no) {
-  var xhr = new XMLHttpRequest()
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState != 4 || xhr.status != 200)
-      return;
-    
-    console.log(xhr);
-    
-    var data = JSON.parse(xhr.responseText);
-    console.log(data);
-    document.querySelector('#no').value = data.no;
-    document.querySelector('#contents').value = data.contents;
-    document.querySelector('#createdDate').value = data.createdDate;
-    document.querySelector('#viewCount').value = data.viewCount;
-  };
-  xhr.open('GET', '../../app/json/board/detail?no=' + no, true)
-  xhr.send()
+	$.getJSON('../../app/json/board/detail?no=' + no,
+			function(data) {
+
+		console.log(data);
+
+		$('#no').val(data.no);
+		$('#contents').val(data.contents);
+		$('#createdDate').val(data.createdDate);
+		$('#viewCount').val(data.viewCount);
+
+	});
+
+	//$( '#contents' ).attr( 'readonly', 'true' );
+
+
 }
 
 

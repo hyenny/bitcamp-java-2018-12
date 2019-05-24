@@ -21,6 +21,13 @@ public class BoardController {
   
   @PostMapping("add")
   public Object add(Board board) {
+    
+//    System.out.println("태그 있는 내용 : " + board.getContents());
+//    String contents = board.getContents().replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+//    board.setContents(contents);
+//    
+//    System.out.println("태그 없는 내용 : " +contents);
+
     HashMap<String,Object> content = new HashMap<>();
     try {
       boardService.add(board);

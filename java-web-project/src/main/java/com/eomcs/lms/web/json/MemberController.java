@@ -29,6 +29,7 @@ public class MemberController {
   public Object add(
       Member member, 
       @RequestParam(value = "photo") MultipartFile photo) {
+    
 
     System.out.println("-----add--------------");
     System.out.println("회원 : " + member);
@@ -38,6 +39,8 @@ public class MemberController {
     try {
 
       if (photo.getSize() > 0) {
+        System.out.println(photo.getOriginalFilename());
+        
         String filename = UUID.randomUUID().toString();
         String uploadDir = servletContext.getRealPath("/upload/member/" + filename);
         photo.transferTo(new File(uploadDir));
